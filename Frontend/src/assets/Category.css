@@ -1,0 +1,10 @@
+
+
+.category-more {
+  text-decoration: underline overline #000;
+  }
+  
+  .category-more span {
+    background: #fff;
+    padding: 0 10px;
+  }
