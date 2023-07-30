@@ -40,5 +40,5 @@ agencySchema.pre('save' ,async function(next){
 
 
 
-const Agency = model("Agencies", agencySchema);
+const Agency = mongoose.model("Agencies", agencySchema);
 module.exports = Agency;
