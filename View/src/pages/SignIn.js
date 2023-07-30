@@ -1,17 +1,14 @@
-
 import "../assets/index.css";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
 import "../assets/index.css";
 
-
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailFlag, setEmailFlag] = useState("")
-  const [error, setError] = useState()
-
+  const [emailFlag, setEmailFlag] = useState("");
+  const [error, setError] = useState();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -21,45 +18,45 @@ const SignIn = () => {
     setPassword(event.target.value);
   };
 
-
   const validateEmail = (email) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return pattern.test(email);
   };
-  
-  const validateUser = async () => {
 
+  const validateUser = async () => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
-      setEmailFlag(true)
-    }
-    else {
-      setEmailFlag(false)
+      setEmailFlag(true);
+    } else {
+      setEmailFlag(false);
     }
     try {
-      const response = await axios.get('http://localhost:3000/users');
+      const response = await axios.get("http://localhost:3000/users");
       const users = response.data;
-  
+
       const existingUser = users.find((user) => user.email === email);
-  
+
       if (!existingUser) {
         // alert('Email does not exist');
-        setError("البريد الالكتروني غير مستخدم")
+        setError("البريد الالكتروني غير مستخدم");
       } else {
         // Validate email and password here
-        if (existingUser.email === email && existingUser.password === password) {
+        if (
+          existingUser.email === email &&
+          existingUser.password === password
+        ) {
           // Route to the index page or perform other actions
-          console.log('Validation successful');
-          setError()
+          console.log("Validation successful");
+          setError();
           window.location.href = "/";
         } else {
           // alert('Invalid email or password');
-          setError("خطأ في البريد الالكتروني أو الرقم السري")
+          setError("خطأ في البريد الالكتروني أو الرقم السري");
         }
       }
     } catch (error) {
-      console.log('Error:', error.message);
+      console.log("Error:", error.message);
     }
   };
 
@@ -86,11 +83,11 @@ const SignIn = () => {
                   onChange={handleEmailChange}
                 />
                 {emailFlag === false && (
-                <label style={{ color: "red" }}>
-                  يرجى ادخال صيغة بريد إلكتروني صحيحة مثل name@example.com
-                </label>
+                  <label style={{ color: "red" }}>
+                    يرجى ادخال صيغة بريد إلكتروني صحيحة مثل name@example.com
+                  </label>
                 )}
-                </div>
+              </div>
 
               {/* <!-- Password input --> */}
               <div className="form-outline mb-4">
@@ -102,7 +99,7 @@ const SignIn = () => {
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {<label style={{color:"red"}}>{error}</label>}
+                {<label style={{ color: "red" }}>{error}</label>}
               </div>
 
               {/* <!-- 2 column grid layout for inline styling --> */}
@@ -153,11 +150,11 @@ const SignIn = () => {
                 <p>
                   ليس لديك حساب؟{" "}
                   <Link to="/signup" style={{ color: "#27374D" }}>
-                    انشئ حساب
+                    أنشئ حساب
                   </Link>
-                  <a href="signup.html" style={{ color: "#27374D" }}>
+                  {/* <a href="signup.html" style={{ color: "#27374D" }}>
                     انشئ حساب
-                  </a>
+                  </a> */}
                 </p>
                 <p>أو سجل الدخول بواسطة:</p>
                 <button type="button" class="btn btn-link btn-floating mx-1">
