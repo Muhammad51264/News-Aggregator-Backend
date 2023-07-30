@@ -40,5 +40,5 @@ agencySchema.pre('save' ,async function(next){
 
 
 
-const Agency = model("agencies", agencySchema);
+const Agency = model("Agencies", agencySchema);
 module.exports = Agency;
