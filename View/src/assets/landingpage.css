@@ -51,6 +51,7 @@ width:30rem;
 
 
 }
+
 .hero-container{
   height: 85vh;
   width: 100%;
@@ -90,6 +91,7 @@ width:30rem;
   display: flex;
   justify-content: end;
   align-items: center;
+  gap: 2rem;
 }
 
 
@@ -98,7 +100,7 @@ width:30rem;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 10px;
+
 }
 
 
@@ -119,12 +121,14 @@ width:30rem;
 /*banner style start*/
 .banner{
   
-  width: 50%;
+  width: 100%;
   height: 10rem;
-  background-image: url('../../public/images/stadium.jpg');
+  background-image: url('../../public/images/orange5G.jpg');
   background-position: center;
-  background-size: cover;
+  background-size:cover;
   position: relative;
+
+  
 }
 
 .banner-body{
@@ -133,7 +137,20 @@ width:30rem;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  width: 100%;
 }
+.banner::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.684);
+
+  mix-blend-mode: multiply;
+}
+
 /*banner style end*/
 
 

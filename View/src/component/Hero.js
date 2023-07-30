@@ -107,7 +107,7 @@ export default function Hero() {
             <Card.Text className="">{AllNews[46].title}</Card.Text>
           </Link>
           <div className="hero-card-tail">
-            <div>بواسطة:{AllNews[46].publisher}</div>
+            <div>بواسطة: {AllNews[46].publisher}</div>
             <div>
               1254 <FontAwesomeIcon icon={faComment} />
             </div>

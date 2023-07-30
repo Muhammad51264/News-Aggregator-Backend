@@ -19,7 +19,7 @@ function NewCard({ data }) {
           <Link
             to={`/Details/${data.id}`}
             className="text-dark"
-            style={{ textDecoration: "none" }}
+            style={{ textDecoration: "none", fontSize: "1rem" }}
           >
             {data.title}
           </Link>

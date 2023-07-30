@@ -15,7 +15,7 @@ const Header = () => {
     numberingSystem: "arab",
   });
   return (
-    <div className="">
+    <Container fluid>
       <Row className="head p-3 px-4 ">
         <Col>
           <div className="d-flex align-items-center justify-content-between">
@@ -35,7 +35,7 @@ const Header = () => {
                   className="text-light"
                   style={{ textDecoration: "none" }}
                 >
-                  تسجيل دخول{" "}
+                  تسجيل دخول
                 </Link>
               </button>
               <button className="header-sign">
@@ -69,7 +69,7 @@ const Header = () => {
 
       {/* Second section */}
       <Row>
-        <Navbar className="head-nav px-5" expand="lg">
+        <Navbar className="head-nav px-3" expand="lg">
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
           <Navbar.Collapse id="basic-navbar-nav">
@@ -138,18 +138,10 @@ const Header = () => {
                   صحة
                 </Link>
               </Nav.Link>
+
               <Nav.Link href="#section3" className="text-light px-2">
                 <Link
-                  to="#"
-                  className="text-light"
-                  style={{ textDecoration: "none" }}
-                >
-                  منوعات
-                </Link>{" "}
-              </Nav.Link>
-              <Nav.Link href="#section3" className="text-light px-2">
-                <Link
-                  to="#"
+                  to="/LiveBroadCast"
                   className="text-light"
                   style={{ textDecoration: "none" }}
                 >
@@ -185,7 +177,7 @@ const Header = () => {
           </Navbar.Collapse>
         </Navbar>
       </Row>
-    </div>
+    </Container>
   );
 };
 
