@@ -1,0 +1,13 @@
+
+.weather-card{
+  width: 15rem;
+  height: 30rem;
+  background: rgb(2,0,36);
+background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(39,55,77,1) 41%, rgba(82,93,108,1) 100%);
+box-shadow: 10px 10px 50px -18px rgba(0,0,0,0.31);
+
+
+}
+.weather-details{
+  background-color: #525D6C;
+}

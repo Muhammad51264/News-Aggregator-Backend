@@ -1,0 +1,156 @@
+
+.hero-card-one{
+  background-image: url('../../public/images/stadium.jpg');
+  background-position: center;
+  background-size: cover;
+width:30rem;
+
+}
+.hero-card-two{
+  background-image: url("https://almnatiq.net/wp-content/uploads/2023/06/4WIh0vW6I36RE7KclViHDH2O9R7Ds7oZ0bFDoAAt.webp");
+  background-position: center;
+  background-size: cover;
+  width: 25rem;
+}
+.hero-card-three{
+  background-image: url('../../public/images/highway.jpg');
+  background-position: center;
+  background-size: cover;
+width:30rem;
+}
+.hero-card-one::before,.hero-card-two::before,.hero-card-three::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  mix-blend-mode: multiply;
+}
+@media (max-width:992px){
+  .hero-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+   
+
+  }
+  .hero-card-one{
+    width: 100%;
+    position: relative;
+
+   
+  }
+  .hero-card-two{
+    width:100%;
+  }
+  .hero-card-three{
+    width: 100%;
+  }
+
+
+}
+
+.hero-container{
+  height: 85vh;
+  width: 100%;
+  
+  
+
+}
+
+.hero-card-body{
+ 
+  position: absolute;
+  bottom: 2rem;
+  direction: rtl;
+  
+}
+.hero-headings-news-span{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+@media (max-width:992px){
+  .hero-headings-news-span{
+ display: none;
+  }
+}
+.hero-card-tail{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+/*story style start*/
+
+.story-row {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 2rem;
+}
+
+
+
+.story {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+
+.story img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid red;
+}
+.story-name {
+  margin-top: 5px;
+}
+
+
+/*story style end*/
+
+
+/*banner style start*/
+.banner{
+  
+  width: 100%;
+  height: 10rem;
+  background-image: url('../../public/images/orange5G.jpg');
+  background-position: center;
+  background-size:cover;
+  position: relative;
+
+  
+}
+
+.banner-body{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+.banner::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.684);
+
+  mix-blend-mode: multiply;
+}
+
+/*banner style end*/
+
+
