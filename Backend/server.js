@@ -13,15 +13,21 @@ mongoose.connect(DB).then(()=>{
     console.log("Database connected");
 }).catch(err => {console.log(err)});
 
+
+
 const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
+const userRouter= require("./Controller/users-controller");
+app.use("/users",userRouter);
 
+const agenciesRouter = require("./Controller/agencies-controller");
+app.use("/agencies",agenciesRouter);
 
-
-
+const newsRouter = require("./Controller/news-controller");
+app.use("/news",newsRouter);
 
 
 
