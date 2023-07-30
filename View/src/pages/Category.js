@@ -7,6 +7,7 @@ import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { AllNews } from "../newsData";
 import "../assets/index.css";
+import AddsBanner from "../component/AddsBanner";
 
 const Category = () => {
   const params = useParams();
@@ -32,6 +33,9 @@ const Category = () => {
             >
               أخبار الرياضة
             </p>
+
+            <AddsBanner />
+
             <Row className="d-flex justify-content-center gap-4 my-5">
               {filteredObjectsSport.map((obj) => (
                 <NewCard data={obj} />
@@ -48,6 +52,7 @@ const Category = () => {
             >
               أخبار الاقتصاد
             </p>
+            <AddsBanner />
             <Row className="d-flex justify-content-center gap-4 my-5">
               {filteredObjectsEconomy.map((obj) => (
                 <NewCard data={obj} />
@@ -63,6 +68,7 @@ const Category = () => {
             >
               عاجل
             </p>
+            <AddsBanner />
             <Row className="d-flex justify-content-center gap-4 my-5">
               {filteredObjectsBreaking.map((obj) => (
                 <NewCard data={obj} />
@@ -79,6 +85,7 @@ const Category = () => {
             >
               أخبار العالم
             </p>
+            <AddsBanner />
             <Row className="d-flex justify-content-center gap-4 my-5">
               {filteredObjectsWorld.map((obj) => (
                 <NewCard data={obj} />
@@ -95,6 +102,7 @@ const Category = () => {
             >
               أخبار الصحة
             </p>
+            <AddsBanner />
             <Row className="d-flex justify-content-center gap-4 my-5">
               {filteredObjectsHealth.map((obj) => (
                 <NewCard data={obj} />
@@ -105,8 +113,8 @@ const Category = () => {
       </Row>
 
       <Row>
-        <Col className="d-flex align-items-center justify-content-center">
-          <h5 className="category-more my-4 ">المزيد</h5>
+        <Col className=" category-more d-flex align-items-center justify-content-center ">
+          <h5 className="category-more my-4 "> المزيد</h5>
         </Col>
       </Row>
 

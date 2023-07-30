@@ -1,44 +1,11 @@
-.footer {
-    bottom: 0;
-    text-align: center;
-  }
-  
-
-.col1{
-    text-align: end;
-}
-
-.col2{
-    text-align: start;
-}
-
-@media only screen and (max-width: 447px) {
-    .col1, .col2 {
-      text-align: center;
-    }
-
-  }
 
 
-  .footer-social-media-row{
-    margin-left: 40%;
-    margin-right: 40%;
-    margin-top: 40px;
-  }
 
-  @media only screen and (max-width: 769px) {
-    .footer-social-media-row{
-        margin-left: 35%;
-        margin-right: 35%;
-      }
 
-  }
+
+
+
+
+
 
   
-  @media only screen and (max-width: 426px) {
-    .footer-social-media-row{
-        margin-left: 20%;
-        margin-right: 20%;
-      }
-
-  }

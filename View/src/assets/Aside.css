@@ -1,0 +1,9 @@
+.aside-news-agencies img{
+    width: 5rem;
+    height: 5rem;
+    
+    border-radius: 50%; 
+    box-shadow: 10px 10px 50px -18px rgb(0, 0, 0);
+    cursor: pointer;
+    }
+    
