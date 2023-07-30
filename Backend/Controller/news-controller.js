@@ -7,7 +7,7 @@ router.get("/", function(req, res,){
 })
 
 
-
+//get method   response  all news [{}]
 
 
 module.exports = router;
