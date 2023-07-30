@@ -4,9 +4,10 @@ import "../assets/AgencyDashboard.css";
 
 const Statistics = () => {
   return (
-    <Container className="mt-5">
+    <Container className="mt-5 min-vh-100">
       <Row>
-        <Col>
+        <h5 className="mb-4">الإحصائيات لهذا الشهر</h5>
+        <Col className="pointer-event">
           <div class="card info-card revenue-card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown">
