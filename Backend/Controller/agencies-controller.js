@@ -38,7 +38,7 @@ router.post("/register", async function(req, res){
 
 // login for agencies
 router.post("/login", async function(req, res){
-    const  {email ,password,userType} = req.body;
+    const  {email ,password} = req.body;
     try {
     const foundAgency= await Agencies.findOne({email:email});
     if (!foundAgency){
@@ -98,6 +98,23 @@ router.post("/delete/:id", async function(req, res){
     }
 });
 
+router.post("/edit/:id", async function(req, res){
+    const newsId = req.params.id;
+    console.log(newsId);
+    const news = req.body;
+    try {
+    const foundNews=await News.findOne({_id : newsId});
+    if (!foundNews){
+        return res.json({"Error": "no news found"});
+    }
 
+    await News.updateOne({_id : newsId},{category:news.category,title:news.title,desc:news.desc,img:news.img});
+    console.log("news updated successfully");
+    return res.json({"status": "Success"});
+    } catch(err){
+        console.log(err);
+        return res.json({"error": err});
+    }
+});
 
 module.exports = router;
