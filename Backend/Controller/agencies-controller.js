@@ -3,6 +3,9 @@ const router = express.Router();
 const Agencies= require("../Models/Agencies");
 const jwt = require("jsonwebtoken");
 const News = require("../Models/News");
+const bcrypt = require("bcrypt")
+const dotenv = require("dotenv");
+dotenv.config({ path: "../config.env" });
 
 //Get all Agencies
 router.get("/", async function(req, res,){
@@ -46,13 +49,11 @@ router.post("/login", async function(req, res){
         return res.json({message:"Username or Password is not correct"})
     }
 
-    // else if ( password ==foundAgency.password  & email == foundAgency.email)
-    return res.json({message:"Username wellcome"})
+  
 
+      const token = jwt.sign({id: foundAgency._id},process.env.JWT_SECRET)
 
-      const token = jwt.sign({id: admin._id},process.env.SECRET)
-
-//     return res.json({token,adminID: admin._id})
+    return res.json({token,adminID: foundAgency._id})
 
 
     } catch(err){
