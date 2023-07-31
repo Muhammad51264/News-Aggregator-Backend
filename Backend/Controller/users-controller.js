@@ -1,9 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../Models/Users"); // Make sure to adjust the path if needed
+const User = require("../Models/Users");
 const dotenv = require("dotenv");
-dotenv.config({path : "../config.env"});
+dotenv.config({ path: "../config.env" });
 
 const router = express.Router();
 
@@ -15,7 +15,9 @@ router.post("/register", async (req, res) => {
     // Check if the username or email already exists
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      return res.status(409).json({ message: "Username or email already in use." });
+      return res
+        .status(409)
+        .json({ message: "Username or email already in use." });
     }
 
     // Create a new user instance and save it to the database
@@ -29,17 +31,19 @@ router.post("/register", async (req, res) => {
     return res.status(201).json({ message: "User registered successfully." });
   } catch (error) {
     console.error("Error during user registration:", error);
-    res.status(500).json({ message: "An error occurred during user registration." });
+    res
+      .status(500)
+      .json({ message: "An error occurred during user registration." });
   }
 });
 
 // Route for user login
 router.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    // Check if the username exists
-    const user = await User.findOne({ username });
+    // Check if the email exists
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials." });
     }
