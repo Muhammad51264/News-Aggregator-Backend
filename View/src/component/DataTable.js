@@ -47,12 +47,12 @@ const DataTable = () => {
             <td>{item.publishDate}</td>
             <td>
               <Button variant="warning" onClick={() => handleEdit(item.id)}>
-                Edit
+                تعديل
               </Button>
             </td>
             <td>
               <Button variant="danger" onClick={() => handleDelete(item.id)}>
-                Delete
+                حذف
               </Button>
             </td>
           </tr>

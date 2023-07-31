@@ -17,6 +17,10 @@ import Statistics from "./Statistics";
 import Setting from "../pages/Setting";
 import Account from "../pages/AgencyAccount";
 import Agencies from "../pages/Agencies";
+import SignInAgency from "../pages/SignInAgency";
+import UserTypeSelectionSignUp from "../pages/UserTypeSelectionSignUp";
+import SignUpAgency from "../pages/SignUpAgency";
+import UserTypeSelectionSignIn from "../pages/UserTypeSelectionSignIn";
 const Layout = () => {
   const userType = "User";
   return (
@@ -29,8 +33,19 @@ const Layout = () => {
         )}
         <Route path="/sports" Component={Sports} />
         <Route path="/Details/:id" Component={Details} />
-        <Route path="/signIn" Component={SignIn} />
+        {userType === "user" && <Route path="/signIn" Component={SignIn} />}
+        {userType === "Agency" && (
+          <Route path="/signInAgency" Component={SignIn} />
+        )}
         <Route path="/signup" Component={SignUp} />
+        <Route path="/SignIn" Component={SignIn} />
+        <Route path="/signUpAgency" Component={SignUpAgency} />
+        <Route path="/UserTypeSelection" Component={UserTypeSelectionSignUp} />
+        <Route
+          path="/UserTypeSelectionSignIn"
+          Component={UserTypeSelectionSignIn}
+        />
+
         <Route path="/:type" Component={Category} />
         <Route path="/live-broadcast" Component={LiveBroadCast} />
         <Route path="/statistics" Component={Statistics} />
