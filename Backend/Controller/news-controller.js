@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
+const News = require("../Models/News"); 
+const Agencies = require("../Models/Agencies"); 
 
 
-router.get("/news/:agencyName", async (req, res,)=>{
+router.get("/:agencyName", async (req, res,)=>{
 try{
+  
   const agencyName = req.params.agencyName;
 
-  const agency = await Agencies.findOne({ name: agencyName });
+  const agency = await Agencies.findOne({ publisher: agencyName });
+  
   if (!agency) {
     return res.status(404).json({ error: "Agency not found" });
   }
