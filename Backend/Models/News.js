@@ -1,16 +1,17 @@
 //ahmad
 
 const mongoose = require('mongoose');
-
-
 const newsSchema = new mongoose.Schema({
-   
 
- 
+  publisher:{
+    type:String , 
+    required:true 
+      },
         category: {
         type:String , 
         required:true 
           },
+
         img :  {
             type:String , 
             required:true 
