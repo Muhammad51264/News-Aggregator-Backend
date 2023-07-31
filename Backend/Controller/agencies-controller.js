@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const Agencies= require("../Models/Agencies");
 const jwt = require("jsonwebtoken");
@@ -19,7 +19,7 @@ router.get("/", async function(req, res,){
 router.post("/register", async function(req, res){
     const agency = req.body;
     try {
-    const foundAgency=await Agencies.findOne({email : agency.email});
+    const foundAgency=await Agencies.findOne({ $or: [{ publisher:agency.publisher }, { email:agency.email }] });
     if (foundAgency){
         return res.json({"Error": "Email already registered"});
     }
@@ -54,15 +54,15 @@ router.post("/register", async function(req, res){
 
 
 
-router.post("/post", async function(req, res){
-    const agency = req.body;
+router.post("/add", async function(req, res){
+    const news = req.body;
     try {
-    const foundAgency=await Agencies.findOne({email : agency.email});
-    if (foundAgency){
-        return res.json({"Error": "Email already registered"});
+    const foundNews=await News.findOne({title : news.title});
+    if (foundNews){
+        return res.json({"Error": "News already registered"});
     }
-    await Agencies.create(agency);
-    console.log("agencies created successfully");
+    await News.create(news);
+    console.log("news created successfully");
     return res.json({"status": "Success"});
     } catch(err){
         console.log(err);

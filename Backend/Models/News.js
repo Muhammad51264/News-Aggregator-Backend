@@ -23,6 +23,10 @@ const newsSchema = new mongoose.Schema({
             type:String , 
             required:true 
               },
+        publisher:{
+          type:String , 
+          required:true 
+        },
         date : {
             type: Date , 
             required:true 
@@ -33,7 +37,7 @@ const newsSchema = new mongoose.Schema({
                     type: String,
                     required: true,
                   },
-                  email: {
+                  username: {
                     type: String,
                     required: true,
                   },
