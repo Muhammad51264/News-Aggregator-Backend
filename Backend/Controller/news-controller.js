@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const News = require("../Models/News"); // Import the News model
-const Agencies = require("../Models/Agencies"); // Import the Agencies model
 
 router.get("/news/:agencyName", async (req, res,)=>{
 try{

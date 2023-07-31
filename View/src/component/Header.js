@@ -6,6 +6,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import AgencyDashboard from "../pages/AgencyDashboard";
 import "../assets/index.css";
+import Agencies from "../pages/Agencies";
 
 const Header = ({ userType }) => {
   const currentDate = new Date().toLocaleDateString("ar-AR", {
@@ -233,11 +234,20 @@ const Header = ({ userType }) => {
 
                 <Nav.Link href="#section3" className="text-light px-2">
                   <Link
-                    to="/LiveBroadCast"
+                    to="/live-broadcast"
                     className="text-light"
                     style={{ textDecoration: "none" }}
                   >
                     البث المباشر
+                  </Link>
+                </Nav.Link>
+                <Nav.Link href="#section3" className="text-light px-2">
+                  <Link
+                    to="/agencies"
+                    className="text-light"
+                    style={{ textDecoration: "none" }}
+                  >
+                    الوكالات الإخبارية
                   </Link>
                 </Nav.Link>
                 <Nav.Link href="#section3" className="text-light px-2 ">

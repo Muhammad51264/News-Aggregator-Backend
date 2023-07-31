@@ -23,11 +23,12 @@
     background-color: #fff;
     transition: 0.2s;
 }
-.card {
+.statistics-card {
     margin-bottom: 30px;
     border: none;
     border-radius: 20px;
-    box-shadow: #98855880 0px 2px 10px;
+    box-shadow: #525d6ca4 0px 2px 10px;
+    padding: 1rem;
 }
 
 .card-header, .card-footer {
