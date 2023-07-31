@@ -84,12 +84,13 @@ router.post("/delete/:id", async function(req, res){
     console.log(newsId);
     const news = req.body;
     try {
-    const foundNews=await News.findOne({title : news.title});
-    if (foundNews){
-        return res.json({"Error": "News already registered"});
+    const foundNews=await News.findOne({_id : newsId});
+    if (!foundNews){
+        return res.json({"Error": "no news found"});
     }
-    await News.create(news);
-    console.log("news created successfully");
+
+    await News.deleteOne({_id : newsId});
+    console.log("news deleted successfully");
     return res.json({"status": "Success"});
     } catch(err){
         console.log(err);
