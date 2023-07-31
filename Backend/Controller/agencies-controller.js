@@ -78,7 +78,23 @@ router.post("/add", async function(req, res){
     }
 });
 
-
+router.post("/delete/:id", async function(req, res){
+    const newsId = req.params.id;
+    console.log(newsId);
+    const news = req.body;
+    try {
+    const foundNews=await News.findOne({title : news.title});
+    if (foundNews){
+        return res.json({"Error": "News already registered"});
+    }
+    await News.create(news);
+    console.log("news created successfully");
+    return res.json({"status": "Success"});
+    } catch(err){
+        console.log(err);
+        return res.json({"error": err});
+    }
+});
 
 
 
