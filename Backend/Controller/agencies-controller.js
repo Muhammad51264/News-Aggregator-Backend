@@ -33,25 +33,33 @@ router.post("/register", async function(req, res){
 });
 
 
+// login for agencies
+router.post("/login", async function(req, res){
+    const  {email ,password,userType} = req.body;
+    try {
+    const foundAgency= await Agencies.findOne({email:email});
+    if (!foundAgency){
+        return  res.json({message : "Agency didn't existi!"})
+    }
+        const isPasswordValid = await bcrypt.compare(password,foundAgency.password)
+    if(!isPasswordValid){
+        return res.json({message:"Username or Password is not correct"})
+    }
+
+    // else if ( password ==foundAgency.password  & email == foundAgency.email)
+    return res.json({message:"Username wellcome"})
 
 
+      const token = jwt.sign({id: admin._id},process.env.SECRET)
+
+//     return res.json({token,adminID: admin._id})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    } catch(err){
+        console.log(err);
+        return res.json({"error": err});
+    }
+});
 
 
 router.post("/add", async function(req, res){
