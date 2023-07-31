@@ -16,8 +16,9 @@ import AgencyDashboard from "../pages/AgencyDashboard";
 import Statistics from "./Statistics";
 import Setting from "../pages/Setting";
 import Account from "../pages/AgencyAccount";
+import Agencies from "../pages/Agencies";
 const Layout = () => {
-  const userType = "Agency";
+  const userType = "User";
   return (
     <BrowserRouter>
       <Header userType={userType} />
@@ -31,10 +32,11 @@ const Layout = () => {
         <Route path="/signIn" Component={SignIn} />
         <Route path="/signup" Component={SignUp} />
         <Route path="/:type" Component={Category} />
-        <Route path="/LiveBroadCast" Component={LiveBroadCast} />
+        <Route path="/live-broadcast" Component={LiveBroadCast} />
         <Route path="/statistics" Component={Statistics} />
         <Route path="/setting" Component={Setting} />
         <Route path="/account" Component={Account} />
+        <Route path="/agencies" Component={Agencies} />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -8,7 +8,7 @@ const Statistics = () => {
       <Row>
         <h5 className="mb-4">الإحصائيات لهذا الشهر</h5>
         <Col className="pointer-event">
-          <div class="card info-card revenue-card">
+          <div class="statistics-card info-card revenue-card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown">
                 <i class="bi bi-three-dots"></i>
@@ -37,7 +37,7 @@ const Statistics = () => {
           </div>
         </Col>
         <Col>
-          <div class="card info-card revenue-card">
+          <div class="statistics-card info-card revenue-card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown">
                 <i class="bi bi-three-dots"></i>
@@ -66,7 +66,7 @@ const Statistics = () => {
           </div>
         </Col>
         <Col>
-          <div class="card info-card revenue-card">
+          <div class="statistics-card info-card revenue-card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown">
                 <i class="bi bi-three-dots"></i>
