@@ -9,6 +9,7 @@ router.get("/allNews", async (req, res) => {
   try {
     // Fetch all news items
     const newsItems = await News.find();
+
     res.json(newsItems);
   } catch (err) {
     console.error(err);
@@ -34,7 +35,10 @@ try{
   res.status(500).json({ error: "Internal Server Error" });
 }
 
-// res.send("hi");
 
 });
+
+
+//get method   response  all news [{}]
+
 module.exports = router;

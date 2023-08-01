@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-const SignUp = () => {
+import { Form } from "react-bootstrap";
+import { Link,useNavigate } from "react-router-dom";
+const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,14 +11,75 @@ const SignUp = () => {
   const [errors, setErrors] = useState([]);
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
+  const [postContent, setPostContent] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const navigate =useNavigate();
+
+
+
+  const submitAgency= async()=>{
+try{
+    await axios.post('http://localhost:8080/agencies/register',{
+      publisher: firstName,
+      email: email,
+      password: password
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  }
+catch(err){
+  console.log(err)
+}
+}
+
+
+
+useEffect(() => {
+  if (emailFlag && passwordFlag) {
+    try {
+      submitAgency();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+},[emailFlag,passwordFlag])
+
+
+  const handlePostContentChange = (event) => {
+    setPostContent(event.target.value);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+
+  //   // Here you can submit the post content and the selected image to your backend or handle the post creation logic.
+  //   console.log("Post Content:", postContent);
+  //   console.log("Selected Image:", selectedImage);
+
+  //   // Clear form after submission
+  //   setPostContent("");
+  //   setSelectedImage(null);
+  // };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
 
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  };
+  // const handleLastNameChange = (event) => {
+  //   setLastName(event.target.value);
+  // };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -77,7 +139,7 @@ const SignUp = () => {
     return errors;
   };
 
-  const saveData = () => {
+  const saveData = async() => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
@@ -100,37 +162,42 @@ const SignUp = () => {
 
     setErrors([]);
 
-    const pushData = async () => {
-      // Check if the email already exists
-      const existingUser = await axios.get(
-        `http://localhost:3000/users?email=${email}`
-      );
+    // const pushData = async () => {
+    //   // Check if the email already exists
+    //   const existingUser = await axios.get(
+    //     `http://localhost:3000/users?email=${email}`
+    //   );
 
-      if (existingUser.data.length > 0) {
-        alert("This email already exists.");
-        return;
-      }
+    //   if (existingUser.data.length > 0) {
+    //     alert("This email already exists.");
+    //     return;
+    //   }
 
-      // Create the new user object
-      const newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      };
+    //   // Create the new user object
+    //   const newUser = {
+    //     firstName: firstName,
+    //     lastName: lastName,
+    //     email: email,
+    //     password: password,
+    //   };
 
-      try {
-        // Save the new user to the JSON server
-        await axios.post("http://localhost:3000/users", newUser);
-        window.location.href = "/signin";
-        alert("User created successfully!");
-      } catch (error) {
-        console.error("Error creating user:", error);
-      }
-    };
-    if (emailFlag && passwordFlag) {
-      pushData();
-    }
+    //   try {
+    //     // Save the new user to the JSON server
+    //     await axios.post("http://localhost:3000/users", newUser);
+    //     window.location.href = "/signin";
+    //     alert("User created successfully!");
+    //   } catch (error) {
+    //     console.error("Error creating user:", error);
+    //   }
+    // };
+    // if (emailFlag && passwordFlag) {
+    //   try {
+    //     await submitAgency();
+    //     navigate("/");
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   };
 
   return (
@@ -139,17 +206,22 @@ const SignUp = () => {
         <div className="sign-up-container p-4 col col-md-5" id="lodin-reg-card">
           <div className="row text-center mt-md-2 mb-md-1">
             <h4 className="" style={{ color: "#27374D" }}>
-              إنشاء حساب لمستخدم عادي
+              إنشاء حساب لوكالة إخبارية
             </h4>
           </div>
-          <form className="mb-5">
+          <form className="mb-5"
+          onSubmit={(e)=>{e.preventDefault();
+          saveData();
+          }}
+          
+          >
             <div className="form-outline mb-4">
               <label
                 className="form-label"
                 htmlFor="firstName"
                 style={{ color: "#27374D" }}
               >
-                الاسم الأول
+                اسم الوكالةالإخبارية
               </label>
               <input
                 type="text"
@@ -161,20 +233,20 @@ const SignUp = () => {
             </div>
 
             <div className="form-outline mb-4">
-              <label
-                className="form-label"
-                htmlFor="lastName"
-                style={{ color: "#27374D" }}
-              >
-                اسم العائلة
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                className="form-control"
-                value={lastName}
-                onChange={handleLastNameChange}
-              />
+            <div className="mb-3">
+                  <label htmlFor="postImage" className="form-label">
+                    اختر شعار الوكالة
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="postImage"
+                    onChange={handleImageChange}
+                    accept="image/*"
+                    capture="environment"
+                  />
+                </div>
+
             </div>
 
             <div className="form-outline mb-4">
@@ -245,7 +317,7 @@ const SignUp = () => {
             )}
 
             <div className="row px-5">
-              <button
+              {/* <button
                 type="button"
                 id="signUp-btn"
                 className="btn btn-block mb-4 login-btn"
@@ -257,6 +329,15 @@ const SignUp = () => {
                 }}
               >
                 أنشئ حساب
+              </button> */}
+              <button
+                className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
+                // to="/AgencyDashboard"
+                type="submit"
+                style={{ backgroundColor: "rgb(39, 55, 77)" }}
+                // onClick={saveData}
+              >
+                أنشئ حساب
               </button>
             </div>
           </form>
@@ -266,4 +347,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpAgency;
