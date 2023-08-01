@@ -22,15 +22,17 @@ router.get("/", async function (req, res) {
 router.post("/register", async function (req, res) {
   const agency = req.body;
   try {
-    const foundAgency = await Agencies.findOne({
+    let foundAgency = await Agencies.findOne({
       $or: [{ publisher: agency.publisher }, { email: agency.email }],
     });
     if (foundAgency) {
       return res.json({ Error: "Email already registered" });
     }
     await Agencies.create(agency);
+    foundAgency = await Agencies.findOne({ email:agency.email });
+    const token = jwt.sign({ id: foundAgency._id }, process.env.JWT_SECRET);
     console.log("agencies created successfully");
-    return res.json({ status: "Success" });
+    return res.json({ status: "Success", token });
   } catch (err) {
     console.log(err);
     return res.json({ error: err });
