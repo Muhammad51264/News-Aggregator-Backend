@@ -7,12 +7,13 @@ import NewDetails from "../pages/NewDetails";
 import "../assets/index.css";
 
 function NewCard({ data }) {
+
   return (
     <Card className="" style={{ width: "18rem", border: "none" }}>
       <Card.Img
         style={{ height: "10rem", borderRadius: "0" }}
         variant="top"
-        src={data.image}
+        src={data.img}
       />
       <Card.Body>
         <Card.Title>
@@ -28,7 +29,7 @@ function NewCard({ data }) {
         <div className="d-flex justify-content-between">
           <Card.Text> {data.publisher}</Card.Text>
           <Card.Text>
-            {data.commentNumber} <FontAwesomeIcon icon={faComment} />
+            {data.comments.length} <FontAwesomeIcon icon={faComment} />
           </Card.Text>
         </div>
       </Card.Body>
