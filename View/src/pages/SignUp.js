@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,6 +11,41 @@ const SignUp = () => {
   const [errors, setErrors] = useState([]);
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
+  function generateUsername(firstName, lastName) {
+    // Get the first letter of the first name (converted to lowercase)
+    const firstLetter = firstName.charAt(0).toLowerCase();
+
+    // Use the entire last name (converted to lowercase)
+    const lowercasedLastName = lastName.toLowerCase();
+
+    // Concatenate the first letter of the first name with the lowercased last name
+    const username = firstLetter + lowercasedLastName;
+
+    return username;
+  }
+
+  const submitUser = async () => {
+    try {
+      const username = generateUsername(firstName, lastName);
+
+      const response = await axios.post(
+        "http://localhost:8080/users/register",
+        {
+          username: username,
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      await console.log(await response.json());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -97,36 +133,8 @@ const SignUp = () => {
 
     setErrors([]);
 
-    const pushData = async () => {
-      // Check if the email already exists
-      const existingUser = await axios.get(
-        `http://localhost:8080/users?email=${email}`
-      );
-
-      if (existingUser.data.length > 0) {
-        alert("This email already exists.");
-        return;
-      }
-
-      // Create the new user object
-      const newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      };
-
-      try {
-        // Save the new user to the JSON server
-        await axios.post("http://localhost:8080/users/register", newUser);
-        window.location.href = "/";
-        alert("User created successfully!");
-      } catch (error) {
-        console.error("Error creating user:", error);
-      }
-    };
     if (emailFlag && passwordFlag) {
-      pushData();
+      submitUser();
     }
   };
 
@@ -242,7 +250,8 @@ const SignUp = () => {
             )}
 
             <div className="row px-5">
-              <button
+              <Link
+                to="/"
                 type="button"
                 id="signUp-btn"
                 className="btn btn-block mb-4 login-btn"
@@ -254,7 +263,7 @@ const SignUp = () => {
                 }}
               >
                 أنشئ حساب
-              </button>
+              </Link>
             </div>
           </form>
         </div>
