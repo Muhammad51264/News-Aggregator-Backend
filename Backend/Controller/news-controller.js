@@ -4,6 +4,18 @@ const News = require("../Models/News");
 const Agencies = require("../Models/Agencies"); 
 
 
+
+router.get("/allNews", async (req, res) => {
+  try {
+    // Fetch all news items
+    const newsItems = await News.find();
+    res.json(newsItems);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/:agencyName", async (req, res,)=>{
 try{
   
@@ -22,12 +34,7 @@ try{
   res.status(500).json({ error: "Internal Server Error" });
 }
 
-    // res.send("hi");
+// res.send("hi");
 
 });
-
-
-//get method   response  all news [{}]
-
-
 module.exports = router;
