@@ -14,11 +14,9 @@ const SignUp = () => {
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
-
   const handleLastNameChange = (event) => {
     setLastName(event.target.value);
   };
-
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -26,7 +24,6 @@ const SignUp = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
   };
@@ -103,7 +100,7 @@ const SignUp = () => {
     const pushData = async () => {
       // Check if the email already exists
       const existingUser = await axios.get(
-        `http://localhost:3000/users?email=${email}`
+        `http://localhost:8080/users?email=${email}`
       );
 
       if (existingUser.data.length > 0) {
@@ -121,8 +118,8 @@ const SignUp = () => {
 
       try {
         // Save the new user to the JSON server
-        await axios.post("http://localhost:3000/users", newUser);
-        window.location.href = "/signin";
+        await axios.post("http://localhost:8080/users/register", newUser);
+        window.location.href = "/";
         alert("User created successfully!");
       } catch (error) {
         console.error("Error creating user:", error);
