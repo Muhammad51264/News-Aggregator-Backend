@@ -14,6 +14,27 @@ const SignUpAgency = () => {
   const [passwordFlag, setPasswordFlag] = useState("");
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const submitAgency= async()=>{
+try{
+    const response = await axios.post('http://localhost:8080/agencies/register',{
+      publisher: firstName,
+      email: email,
+      password: password
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    await console.log(await response.json())
+  }
+catch(err){
+  console.log(err)
+}}
+
+
+
   const handlePostContentChange = (event) => {
     setPostContent(event.target.value);
   };
@@ -287,6 +308,7 @@ const SignUpAgency = () => {
                 className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
                 to="/AgencyDashboard"
                 style={{ backgroundColor: "rgb(39, 55, 77)" }}
+                onClick={submitAgency}
               >
                 أنشئ حساب
               </Link>
