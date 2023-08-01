@@ -4,8 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../Models/Users");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
-
 const router = express.Router();
+
 
 // Route for user registration
 router.post("/register", async (req, res) => {
