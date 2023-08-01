@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const SignUp = () => {
+const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,6 +12,28 @@ const SignUp = () => {
   const [errors, setErrors] = useState([]);
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
+  const [postContent, setPostContent] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const handlePostContentChange = (event) => {
+    setPostContent(event.target.value);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Here you can submit the post content and the selected image to your backend or handle the post creation logic.
+    console.log("Post Content:", postContent);
+    console.log("Selected Image:", selectedImage);
+
+    // Clear form after submission
+    setPostContent("");
+    setSelectedImage(null);
+  };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -139,7 +163,7 @@ const SignUp = () => {
         <div className="sign-up-container p-4 col col-md-5" id="lodin-reg-card">
           <div className="row text-center mt-md-2 mb-md-1">
             <h4 className="" style={{ color: "#27374D" }}>
-              إنشاء حساب لمستخدم عادي
+              إنشاء حساب لوكالة إخبارية
             </h4>
           </div>
           <form className="mb-5">
@@ -149,7 +173,7 @@ const SignUp = () => {
                 htmlFor="firstName"
                 style={{ color: "#27374D" }}
               >
-                الاسم الأول
+                اسم الوكالةالإخبارية
               </label>
               <input
                 type="text"
@@ -161,20 +185,21 @@ const SignUp = () => {
             </div>
 
             <div className="form-outline mb-4">
-              <label
-                className="form-label"
-                htmlFor="lastName"
-                style={{ color: "#27374D" }}
-              >
-                اسم العائلة
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                className="form-control"
-                value={lastName}
-                onChange={handleLastNameChange}
-              />
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="postImage" className="form-label">
+                    اختر شعار الوكالة
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="postImage"
+                    onChange={handleImageChange}
+                    accept="image/*"
+                    capture="environment"
+                  />
+                </div>
+              </form>
             </div>
 
             <div className="form-outline mb-4">
@@ -245,7 +270,7 @@ const SignUp = () => {
             )}
 
             <div className="row px-5">
-              <button
+              {/* <button
                 type="button"
                 id="signUp-btn"
                 className="btn btn-block mb-4 login-btn"
@@ -257,7 +282,14 @@ const SignUp = () => {
                 }}
               >
                 أنشئ حساب
-              </button>
+              </button> */}
+              <Link
+                className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
+                to="/AgencyDashboard"
+                style={{ backgroundColor: "rgb(39, 55, 77)" }}
+              >
+                أنشئ حساب
+              </Link>
             </div>
           </form>
         </div>
@@ -266,4 +298,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpAgency;
