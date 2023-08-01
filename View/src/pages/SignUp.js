@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -11,6 +11,8 @@ const SignUp = () => {
   const [errors, setErrors] = useState([]);
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
+  const navigate = useNavigate();
+
   function generateUsername(firstName, lastName) {
     // Get the first letter of the first name (converted to lowercase)
     const firstLetter = firstName.charAt(0).toLowerCase();
@@ -27,8 +29,7 @@ const SignUp = () => {
   const submitUser = async () => {
     try {
       const username = generateUsername(firstName, lastName);
-
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8080/users/register",
         {
           username: username,
@@ -41,11 +42,20 @@ const SignUp = () => {
           },
         }
       );
-      await console.log(await response.json());
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    if (emailFlag && passwordFlag) {
+      try {
+        submitUser();
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [emailFlag, passwordFlag]);
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -132,10 +142,6 @@ const SignUp = () => {
     }
 
     setErrors([]);
-
-    if (emailFlag && passwordFlag) {
-      submitUser();
-    }
   };
 
   return (
@@ -147,7 +153,13 @@ const SignUp = () => {
               إنشاء حساب لمستخدم عادي
             </h4>
           </div>
-          <form className="mb-5">
+          <form
+            className="mb-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveData();
+            }}
+          >
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -164,7 +176,6 @@ const SignUp = () => {
                 onChange={handleFirstNameChange}
               />
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -181,7 +192,6 @@ const SignUp = () => {
                 onChange={handleLastNameChange}
               />
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -203,7 +213,6 @@ const SignUp = () => {
                 </label>
               )}
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -220,7 +229,6 @@ const SignUp = () => {
                 onChange={handlePasswordChange}
               />
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -237,7 +245,6 @@ const SignUp = () => {
                 onChange={handleConfirmPasswordChange}
               />
             </div>
-
             {errors.length > 0 && (
               <div>
                 <p style={{ color: "red" }}>يوجد أخطاء في الرقم السري:</p>
@@ -248,22 +255,14 @@ const SignUp = () => {
                 ))}
               </div>
             )}
-
             <div className="row px-5">
-              <Link
-                to="/"
-                type="button"
-                id="signUp-btn"
-                className="btn btn-block mb-4 login-btn"
-                onClick={saveData}
-                style={{
-                  color: "#fff",
-                  backgroundColor: "#27374D",
-                  width: "7rem",
-                }}
+              <button
+                className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
+                type="submit"
+                style={{ backgroundColor: "rgb(39, 55, 77)" }}
               >
                 أنشئ حساب
-              </Link>
+              </button>
             </div>
           </form>
         </div>
