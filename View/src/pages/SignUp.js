@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,15 +11,58 @@ const SignUp = () => {
   const [errors, setErrors] = useState([]);
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
+  const navigate = useNavigate();
+
+  function generateUsername(firstName, lastName) {
+    // Get the first letter of the first name (converted to lowercase)
+    const firstLetter = firstName.charAt(0).toLowerCase();
+
+    // Use the entire last name (converted to lowercase)
+    const lowercasedLastName = lastName.toLowerCase();
+
+    // Concatenate the first letter of the first name with the lowercased last name
+    const username = firstLetter + lowercasedLastName;
+
+    return username;
+  }
+
+  const submitUser = async () => {
+    try {
+      const username = generateUsername(firstName, lastName);
+      await axios.post(
+        "http://localhost:8080/users/register",
+        {
+          username: username,
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    if (emailFlag && passwordFlag) {
+      try {
+        submitUser();
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [emailFlag, passwordFlag]);
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
-
   const handleLastNameChange = (event) => {
     setLastName(event.target.value);
   };
-
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -26,7 +70,6 @@ const SignUp = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
   };
@@ -99,38 +142,6 @@ const SignUp = () => {
     }
 
     setErrors([]);
-
-    const pushData = async () => {
-      // Check if the email already exists
-      const existingUser = await axios.get(
-        `http://localhost:3000/users?email=${email}`
-      );
-
-      if (existingUser.data.length > 0) {
-        alert("This email already exists.");
-        return;
-      }
-
-      // Create the new user object
-      const newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      };
-
-      try {
-        // Save the new user to the JSON server
-        await axios.post("http://localhost:3000/users", newUser);
-        window.location.href = "/signin";
-        alert("User created successfully!");
-      } catch (error) {
-        console.error("Error creating user:", error);
-      }
-    };
-    if (emailFlag && passwordFlag) {
-      pushData();
-    }
   };
 
   return (
@@ -142,7 +153,13 @@ const SignUp = () => {
               إنشاء حساب لمستخدم عادي
             </h4>
           </div>
-          <form className="mb-5">
+          <form
+            className="mb-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveData();
+            }}
+          >
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -159,7 +176,6 @@ const SignUp = () => {
                 onChange={handleFirstNameChange}
               />
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -176,7 +192,6 @@ const SignUp = () => {
                 onChange={handleLastNameChange}
               />
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -198,7 +213,6 @@ const SignUp = () => {
                 </label>
               )}
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -215,7 +229,6 @@ const SignUp = () => {
                 onChange={handlePasswordChange}
               />
             </div>
-
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -232,7 +245,6 @@ const SignUp = () => {
                 onChange={handleConfirmPasswordChange}
               />
             </div>
-
             {errors.length > 0 && (
               <div>
                 <p style={{ color: "red" }}>يوجد أخطاء في الرقم السري:</p>
@@ -243,18 +255,11 @@ const SignUp = () => {
                 ))}
               </div>
             )}
-
             <div className="row px-5">
               <button
-                type="button"
-                id="signUp-btn"
-                className="btn btn-block mb-4 login-btn"
-                onClick={saveData}
-                style={{
-                  color: "#fff",
-                  backgroundColor: "#27374D",
-                  width: "7rem",
-                }}
+                className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
+                type="submit"
+                style={{ backgroundColor: "rgb(39, 55, 77)" }}
               >
                 أنشئ حساب
               </button>
