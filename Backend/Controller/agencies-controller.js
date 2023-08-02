@@ -5,7 +5,18 @@ const jwt = require("jsonwebtoken");
 const News = require("../Models/News");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
+const fs = require("fs");
 dotenv.config({ path: "../config.env" });
+const multer = require("multer");
+const upload = multer({ dest: "Pictures/NewsPictures" });
+// const cloudinary =require("../Pictures/cloudinary");
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret:process.env.CLOUDINARY_API_SECRET
+})
 
 //Get all Agencies
 router.get("/", async function (req, res) {
@@ -19,20 +30,49 @@ router.get("/", async function (req, res) {
 });
 
 // register for agencies
-router.post("/register", async function (req, res) {
+router.post("/register",upload.single("img"), async function (req, res) {
   const agency = req.body;
+  const uploadedImage = req.file;
+  let imgURL="";
   try {
+  
     let foundAgency = await Agencies.findOne({
       $or: [{ publisher: agency.publisher }, { email: agency.email }],
     });
     if (foundAgency) {
       return res.json({ Error: "Email already registered" });
     }
-    await Agencies.create(agency);
+
+    fs.renameSync(`Pictures/NewsPictures/${uploadedImage.filename}`,`Pictures/NewsPictures/${uploadedImage.filename}.jpg`)
+    cloudinary.uploader.upload(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`, {
+      resource_type: "image"
+    }).then(async result =>{
+
+      console.log("success",JSON.stringify(result, null, 2))
+      imgURL=result.url;
+      console.log(imgURL);
+    await Agencies.create({
+      publisher : agency.publisher,
+      img : imgURL,
+      email: agency.email,
+      password: agency.password
+    });
+
     foundAgency = await Agencies.findOne({ email:agency.email });
     const token = jwt.sign({ id: foundAgency._id }, process.env.JWT_SECRET);
     console.log("agencies created successfully");
+    console.log(token);
+
+    fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
     return res.json({ status: "Success", token });
+    }
+
+      ).catch(err =>{
+        console.log("failed")
+        console.log("error",JSON.stringify(err, null, 2))}
+      );
+      console.log(imgURL);
+
   } catch (err) {
     console.log(err);
     return res.json({ error: err });

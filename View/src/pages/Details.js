@@ -44,7 +44,7 @@ console.log(clickedNew);
           style={{ width: "100%", height: "30rem" }}
         />
         <Card.Body>
-          <Card.Text> {clickedNew.description}</Card.Text>
+          <Card.Text> {clickedNew.desc}</Card.Text>
         </Card.Body>
       </Card>
       <Row>

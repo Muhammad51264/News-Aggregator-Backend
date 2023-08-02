@@ -19,17 +19,29 @@ const SignUpAgency = () => {
 
   const submitAgency= async()=>{
 try{
-    await axios.post('http://localhost:8080/agencies/register',{
-      publisher: firstName,
-      email: email,
-      password: password
-    }, {
+
+  const AgencyInfo = new FormData();
+  AgencyInfo.append("publisher", firstName);
+  AgencyInfo.append("email", email);
+  AgencyInfo.append("password", password);
+  AgencyInfo.append("img", selectedImage);
+    // {
+    //   publisher: firstName,
+    //   email: email,
+    //   password: password,
+    //   img: selectedImage
+    // }
+    const res= await axios.post('http://localhost:8080/agencies/register',
+    AgencyInfo
+    , {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     }
   )
 
+  const data = await res.data;
+  console.log(data);
   }
 catch(err){
   console.log(err)
@@ -59,6 +71,7 @@ useEffect(() => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
+    console.log(file);
   };
 
   // const handleSubmit = (event) => {
@@ -238,6 +251,7 @@ useEffect(() => {
                     اختر شعار الوكالة
                   </label>
                   <input
+                  required
                     type="file"
                     className="form-control"
                     id="postImage"
