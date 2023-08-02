@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,44 +13,38 @@ const SignUpAgency = () => {
   const [passwordFlag, setPasswordFlag] = useState("");
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
-
-
-  const submitAgency= async()=>{
-try{
-    await axios.post('http://localhost:8080/agencies/register',{
-      publisher: firstName,
-      email: email,
-      password: password
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-
-  }
-catch(err){
-  console.log(err)
-}
-}
-
-
-
-useEffect(() => {
-  if (emailFlag && passwordFlag) {
+  const submitAgency = async () => {
     try {
-      submitAgency();
-      navigate("/");
+      await axios.post(
+        "http://localhost:8080/agencies/register",
+        {
+          publisher: firstName,
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-
-},[emailFlag,passwordFlag])
-
+  useEffect(() => {
+    if (emailFlag && passwordFlag) {
+      try {
+        submitAgency();
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [emailFlag, passwordFlag]);
 
   const handlePostContentChange = (event) => {
     setPostContent(event.target.value);
@@ -139,7 +133,7 @@ useEffect(() => {
     return errors;
   };
 
-  const saveData = async() => {
+  const saveData = async () => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
@@ -209,11 +203,12 @@ useEffect(() => {
               إنشاء حساب لوكالة إخبارية
             </h4>
           </div>
-          <form className="mb-5"
-          onSubmit={(e)=>{e.preventDefault();
-          saveData();
-          }}
-          
+          <form
+            className="mb-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveData();
+            }}
           >
             <div className="form-outline mb-4">
               <label
@@ -233,20 +228,19 @@ useEffect(() => {
             </div>
 
             <div className="form-outline mb-4">
-            <div className="mb-3">
-                  <label htmlFor="postImage" className="form-label">
-                    اختر شعار الوكالة
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="postImage"
-                    onChange={handleImageChange}
-                    accept="image/*"
-                    capture="environment"
-                  />
-                </div>
-
+              <div className="mb-3">
+                <label htmlFor="postImage" className="form-label">
+                  اختر شعار الوكالة
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="postImage"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  capture="environment"
+                />
+              </div>
             </div>
 
             <div className="form-outline mb-4">
