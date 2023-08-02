@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../Models/Users");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
+const News = require("../Models/News");
 
 const router = express.Router();
 
@@ -65,5 +66,8 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "An error occurred during user login." });
   }
 });
+
+
+
 
 module.exports = router;
