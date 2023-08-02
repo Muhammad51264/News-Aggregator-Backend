@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
+import { Link,useNavigate } from "react-router-dom";
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,10 +13,13 @@ const SignUpAgency = () => {
   const [passwordFlag, setPasswordFlag] = useState("");
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const navigate =useNavigate();
+
+
 
   const submitAgency= async()=>{
 try{
-    const response = await axios.post('http://localhost:8080/agencies/register',{
+    await axios.post('http://localhost:8080/agencies/register',{
       publisher: firstName,
       email: email,
       password: password
@@ -27,12 +29,27 @@ try{
       },
     }
   )
-    await console.log(await response.json())
+
   }
 catch(err){
   console.log(err)
-}}
+}
+}
 
+
+
+useEffect(() => {
+  if (emailFlag && passwordFlag) {
+    try {
+      submitAgency();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+},[emailFlag,passwordFlag])
 
 
   const handlePostContentChange = (event) => {
@@ -44,25 +61,25 @@ catch(err){
     setSelectedImage(file);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
 
-    // Here you can submit the post content and the selected image to your backend or handle the post creation logic.
-    console.log("Post Content:", postContent);
-    console.log("Selected Image:", selectedImage);
+  //   // Here you can submit the post content and the selected image to your backend or handle the post creation logic.
+  //   console.log("Post Content:", postContent);
+  //   console.log("Selected Image:", selectedImage);
 
-    // Clear form after submission
-    setPostContent("");
-    setSelectedImage(null);
-  };
+  //   // Clear form after submission
+  //   setPostContent("");
+  //   setSelectedImage(null);
+  // };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
 
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  };
+  // const handleLastNameChange = (event) => {
+  //   setLastName(event.target.value);
+  // };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -122,7 +139,7 @@ catch(err){
     return errors;
   };
 
-  const saveData = () => {
+  const saveData = async() => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
@@ -145,37 +162,42 @@ catch(err){
 
     setErrors([]);
 
-    const pushData = async () => {
-      // Check if the email already exists
-      const existingUser = await axios.get(
-        `http://localhost:3000/users?email=${email}`
-      );
+    // const pushData = async () => {
+    //   // Check if the email already exists
+    //   const existingUser = await axios.get(
+    //     `http://localhost:3000/users?email=${email}`
+    //   );
 
-      if (existingUser.data.length > 0) {
-        alert("This email already exists.");
-        return;
-      }
+    //   if (existingUser.data.length > 0) {
+    //     alert("This email already exists.");
+    //     return;
+    //   }
 
-      // Create the new user object
-      const newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      };
+    //   // Create the new user object
+    //   const newUser = {
+    //     firstName: firstName,
+    //     lastName: lastName,
+    //     email: email,
+    //     password: password,
+    //   };
 
-      try {
-        // Save the new user to the JSON server
-        await axios.post("http://localhost:3000/users", newUser);
-        window.location.href = "/signin";
-        alert("User created successfully!");
-      } catch (error) {
-        console.error("Error creating user:", error);
-      }
-    };
-    if (emailFlag && passwordFlag) {
-      pushData();
-    }
+    //   try {
+    //     // Save the new user to the JSON server
+    //     await axios.post("http://localhost:3000/users", newUser);
+    //     window.location.href = "/signin";
+    //     alert("User created successfully!");
+    //   } catch (error) {
+    //     console.error("Error creating user:", error);
+    //   }
+    // };
+    // if (emailFlag && passwordFlag) {
+    //   try {
+    //     await submitAgency();
+    //     navigate("/");
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   };
 
   return (
@@ -187,7 +209,12 @@ catch(err){
               إنشاء حساب لوكالة إخبارية
             </h4>
           </div>
-          <form className="mb-5">
+          <form className="mb-5"
+          onSubmit={(e)=>{e.preventDefault();
+          saveData();
+          }}
+          
+          >
             <div className="form-outline mb-4">
               <label
                 className="form-label"
@@ -206,8 +233,7 @@ catch(err){
             </div>
 
             <div className="form-outline mb-4">
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+            <div className="mb-3">
                   <label htmlFor="postImage" className="form-label">
                     اختر شعار الوكالة
                   </label>
@@ -220,7 +246,7 @@ catch(err){
                     capture="environment"
                   />
                 </div>
-              </form>
+
             </div>
 
             <div className="form-outline mb-4">
@@ -304,14 +330,15 @@ catch(err){
               >
                 أنشئ حساب
               </button> */}
-              <Link
+              <button
                 className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
-                to="/AgencyDashboard"
+                // to="/AgencyDashboard"
+                type="submit"
                 style={{ backgroundColor: "rgb(39, 55, 77)" }}
-                onClick={submitAgency}
+                // onClick={saveData}
               >
                 أنشئ حساب
-              </Link>
+              </button>
             </div>
           </form>
         </div>

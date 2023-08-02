@@ -49,7 +49,7 @@ const Header = ({ userType }) => {
                       className="text-light"
                       style={{ textDecoration: "none" }}
                     >
-                      إنشاء حساب{" "}
+                      إنشاء حساب
                     </Link>
                   </button>
                 </div>
@@ -318,7 +318,7 @@ const Header = ({ userType }) => {
                     <button className="nav-sign">
                       {" "}
                       <Link
-                        to="/SignUp"
+                        to="/UserTypeSelection"
                         className="text-light"
                         style={{ textDecoration: "none" }}
                       >

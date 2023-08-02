@@ -33,7 +33,7 @@ const Layout = () => {
         )}
         <Route path="/sports" Component={Sports} />
         <Route path="/Details/:id" Component={Details} />
-        {userType === "user" && <Route path="/signIn" Component={SignIn} />}
+        {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
         {userType === "Agency" && (
           <Route path="/signInAgency" Component={SignIn} />
         )}
