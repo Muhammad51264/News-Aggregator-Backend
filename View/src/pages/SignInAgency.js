@@ -1,30 +1,39 @@
 import "../assets/index.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
 import "../assets/index.css";
+import {useCookies} from "react-cookie"
 
 const SignInAgency = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailFlag, setEmailFlag] = useState("");
-  const [error, setError] = useState();
-
+  const [error,setError] = useState("");
+  const [_, setCookies] = useCookies(["access_token"]);
+  
+  const navigate = useNavigate()
+  
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
-
+  
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
   const validateEmail = (email) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   
     return pattern.test(email);
   };
-
+  
   const validateUser = async () => {
+
+
     let emailIsValid = validateEmail(email);
+    // console.log(email, password,);
 
     if (emailIsValid) {
       setEmailFlag(true);
@@ -32,31 +41,25 @@ const SignInAgency = () => {
       setEmailFlag(false);
     }
     try {
-      const response = await axios.get("http://localhost:3000/users");
-      const users = response.data;
-
-      const existingUser = users.find((user) => user.email === email);
-
-      if (!existingUser) {
-        // alert('Email does not exist');
-        setError("البريد الالكتروني غير مستخدم");
-      } else {
-        // Validate email and password here
-        if (
-          existingUser.email === email &&
-          existingUser.password === password
-        ) {
-          // Route to the index page or perform other actions
-          console.log("Validation successful");
-          setError();
-          window.location.href = "/";
-        } else {
-          // alert('Invalid email or password');
-          setError("خطأ في البريد الالكتروني أو الرقم السري");
+      console.log(email, password);
+      const response = await axios.post(
+        "http://localhost:8080/agencies/login",
+        {
+          email: email,
+          password: password,
         }
-      }
-    } catch (error) {
-      console.log("Error:", error.message);
+      );
+      //data = return res.json({ token, adminID: foundAgency._id }); 
+      // الي موجودة بالباك على نفس ال 
+      // endpoint
+      
+      // const [_, setCookies] = useCookies(["access_token"]);
+      const token = await response.data;
+      console.log(token);
+      setCookies("access_token", token);
+      navigate('/')
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
@@ -134,6 +137,7 @@ const SignInAgency = () => {
               {/* <!-- Submit button --> */}
               <div class="row ps-5 pe-5 ">
                 <button
+                  to="/"
                   type="button"
                   id="signUp-btn"
                   className="btn btn-block mb-4 login-btn "
@@ -192,6 +196,7 @@ const SignInAgency = () => {
           </div>
         </div>
       </div>
+     
     </section>
   );
 };

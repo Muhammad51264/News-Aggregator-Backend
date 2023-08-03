@@ -21,9 +21,18 @@ import SignInAgency from "../pages/SignInAgency";
 import UserTypeSelectionSignUp from "../pages/UserTypeSelectionSignUp";
 import SignUpAgency from "../pages/SignUpAgency";
 import UserTypeSelectionSignIn from "../pages/UserTypeSelectionSignIn";
+import { createContext, useContext, useState } from "react";
+
+const NewsContext = createContext();
+
+export const useNewsContext = () => {
+  return useContext(NewsContext);
+};
 const Layout = () => {
+  const [allNews, setAllNews] = useState([]);
   const userType = "Agency";
   return (
+    <NewsContext.Provider value={{ allNews, setAllNews }}>
     <BrowserRouter>
       <Header userType={userType} />
       <Routes>
@@ -56,6 +65,7 @@ const Layout = () => {
       </Routes>
       <Footer />
     </BrowserRouter>
+    </NewsContext.Provider>
   );
 };
 

@@ -18,7 +18,7 @@ function NewCard({ data }) {
       <Card.Body>
         <Card.Title>
           <Link
-            to={`/Details/${data.id}`}
+            to={`/Details/${data._id}`}
             className="text-dark"
             style={{ textDecoration: "none", fontSize: "1rem" }}
           >

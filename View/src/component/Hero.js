@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { AllNews } from "../newsData";
 
 export default function Hero() {
-  console.log(AllNews[28]);
+  // console.log(AllNews[28]);
   return (
     <div className="hero-container d-flex justify-content-center my-4 ">
       <Card
