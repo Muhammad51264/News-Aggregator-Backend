@@ -1,26 +1,48 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import "../assets/Category.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NewCard from "../component/NewCard";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { AllNews } from "../newsData";
+// import { AllNews } from "../newsData";
 import "../assets/index.css";
 import AddsBanner from "../component/AddsBanner";
+import axios from "axios";
 
 const Category = () => {
   const params = useParams();
-  const props = params.type;
-  const filteredObjectsSport = AllNews.filter((obj) => obj.type === "sport");
-  const filteredObjectsEconomy = AllNews.filter(
-    (obj) => obj.type === "economy"
+  const props = params.category;
+
+  const [allNews, setAllNews] = useState([]);
+
+  useEffect(() => {
+    // Fetch all news items from the backend API
+    axios
+      .get("http://localhost:8080/news/allNews")
+      .then((response) => {
+        setAllNews(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching all news:", error);
+      });
+  }, []);
+
+  const filteredObjectsSport = allNews.filter(
+    (obj) => obj.category === "sport"
   );
-  const filteredObjectsBreaking = AllNews.filter(
-    (obj) => obj.type === "breaking"
+  const filteredObjectsEconomy = allNews.filter(
+    (obj) => obj.category === "economy"
   );
-  const filteredObjectsWorld = AllNews.filter((obj) => obj.type === "world");
-  const filteredObjectsHealth = AllNews.filter((obj) => obj.type === "health");
+  const filteredObjectsBreaking = allNews.filter(
+    (obj) => obj.category === "breaking"
+  );
+  const filteredObjectsWorld = allNews.filter(
+    (obj) => obj.category === "world"
+  );
+  const filteredObjectsHealth = allNews.filter(
+    (obj) => obj.category === "health"
+  );
 
   return (
     <Container>
@@ -119,7 +141,7 @@ const Category = () => {
       </Row>
 
       <Row className="d-flex justify-content-center gap-4 my-5">
-        {AllNews.map((newsItem) => {
+        {allNews.map((newsItem) => {
           return <NewCard data={newsItem} />;
         })}
       </Row>
