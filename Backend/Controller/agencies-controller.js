@@ -19,7 +19,7 @@ cloudinary.config({
 });
 
 //Get all Agencies
-router.get("/allAgencies", async function (req, res) {
+router.get("/", async function (req, res) {
   try {
     const allAgencies = await Agencies.find();
     return res.json(allAgencies);
@@ -73,6 +73,7 @@ router.post("/register", upload.single("img"), async function (req, res) {
       .catch((err) => {
         console.log("failed");
         console.log("error", JSON.stringify(err, null, 2));
+        fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
       });
     console.log(imgURL);
   } catch (err) {
