@@ -7,12 +7,16 @@ import NewCard from "../component/NewCard";
 
 import "../assets/index.css";
 import { useParams } from "react-router-dom";
-import { AllNews } from "../newsData";
+// import { AllNews } from "../newsData";
+import { useNewsContext } from "../pages/Layout";
 
 const Details = () => {
   const { id } = useParams();
-  const clickedNew = AllNews.filter((e) => e.id === parseInt(id))[0];
-
+  console.log(id);
+  const { allNews } = useNewsContext();
+  const clickedNew = allNews.find((e) => e._id === id);
+console.log(allNews);
+console.log(clickedNew);
   return (
     <Container className=" details-container d-flex align-items-center justify-content-center flex-column ">
       <Card className=" mb-5 my-4 w-75 border-0 d-flex gap-3">
@@ -36,11 +40,11 @@ const Details = () => {
         <Card.Img
           className="details-img-center"
           variant="top"
-          src={clickedNew.image}
+          src={clickedNew.img}
           style={{ width: "100%", height: "30rem" }}
         />
         <Card.Body>
-          <Card.Text> {clickedNew.description}</Card.Text>
+          <Card.Text> {clickedNew.desc}</Card.Text>
         </Card.Body>
       </Card>
       <Row>
@@ -50,7 +54,7 @@ const Details = () => {
       </Row>
 
       <Row className="d-flex justify-content-center gap-4 my-5">
-        {AllNews.map((newsItem) => {
+        {allNews.map((newsItem) => {
           return <NewCard data={newsItem} />;
         })}
       </Row>

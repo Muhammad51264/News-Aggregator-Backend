@@ -6,7 +6,12 @@ const agencySchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true, // Enforce uniqueness on the username field
-  }, email: {
+  },
+  img:{
+    type: String,
+    required: true
+  },
+  email: {
     type: String,
     required: true,
     unique: true, // Enforce uniqueness on the username field

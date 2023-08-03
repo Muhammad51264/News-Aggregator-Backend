@@ -53,6 +53,7 @@ const SignUpAgency = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
+    console.log(file);
   };
 
   // const handleSubmit = (event) => {

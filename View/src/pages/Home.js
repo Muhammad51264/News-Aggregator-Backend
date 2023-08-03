@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Hero from "../component/Hero";
 import axios from "axios";
 import Story from "../component/Story";
@@ -8,11 +8,13 @@ import Aside from "../component/Aside";
 import NewCard from "../component/NewCard";
 // import { AllNews } from "../newsData";
 import "../assets/index.css";
+import { useNewsContext } from "../pages/Layout";
 
 // Add more objects
 
 const Home = () => {
-  const [allNews, setAllNews] = useState([]);
+  // const [allNews, setAllNews] = useState([]);
+  const { allNews, setAllNews } = useNewsContext();
 
   useEffect(() => {
     // Fetch all news items from the backend API
