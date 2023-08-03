@@ -25,15 +25,23 @@ import UserTypeSelectionSignIn from "../pages/UserTypeSelectionSignIn";
 import { createContext, useContext, useState } from "react";
 
 const NewsContext = createContext();
+const AgenciesContext = createContext();
 
 export const useNewsContext = () => {
   return useContext(NewsContext);
 };
+export const useAgenciesContext = () => {
+  return useContext(AgenciesContext);
+};
 const Layout = () => {
   const [allNews, setAllNews] = useState([]);
-  const userType = "Agency";
+  const [allAgencies, setAllAgencies] = useState([]);
+
+  const userType = "User";
   return (
-    <NewsContext.Provider value={{ allNews, setAllNews }}>
+    <NewsContext.Provider
+      value={{ allNews, setAllNews, allAgencies, setAllAgencies }}
+    >
       <BrowserRouter>
         <Header userType={userType} />
         <Routes>
