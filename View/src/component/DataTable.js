@@ -24,8 +24,11 @@ const DataTable = () => {
       }catch(e){
         console.log(e)
     }}
-
-    fetchToken()
+    if (!cookies.access_token){
+        console.log("not token");
+    }else{
+      fetchToken();
+    }
 
   }, []);
 

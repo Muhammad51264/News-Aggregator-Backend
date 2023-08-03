@@ -45,7 +45,10 @@ try{
   )
 
   const data = await res.data;
-  setCookies("access_token",data.token);
+  if (data.status === "Success"){
+    setCookies("access_token",data.token);
+    navigate("/admindashboard");
+  }
   console.log(data);
   }
 catch(err){
@@ -59,7 +62,6 @@ useEffect(() => {
   if (emailFlag && passwordFlag) {
     try {
       submitAgency();
-      navigate("/admindashboard");
     } catch (err) {
       console.log(err);
     }
