@@ -20,6 +20,7 @@ const SignUpAgency = () => {
   const submitAgency= async()=>{
 try{
 
+  
   const AgencyInfo = new FormData();
   AgencyInfo.append("publisher", firstName);
   AgencyInfo.append("email", email);
