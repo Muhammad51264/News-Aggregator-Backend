@@ -9,20 +9,8 @@ const router = express.Router();
 // Route for user registration
 router.post("/register", async (req, res) => {
   try {
-    console.log("hello");
     const { username, email, password } = req.body;
-    const emptyFields = [];
-    if (!email) {
-      emptyFields.push("email");
-    }
-    if (!password) {
-      emptyFields.push("password");
-    }
-    if (emptyFields.length > 0) {
-      return res
-        .status(400)
-        .json({ message: "please fill in all the fields", emptyFields });
-    }
+
     // Check if the username or email already exists
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {

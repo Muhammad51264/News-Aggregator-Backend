@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import "../assets/index.css";
 import AddsBanner from "../component/AddsBanner";
 import axios from "axios";
+import { useNewsContext } from "../pages/Layout";
 
 const Category = () => {
   const params = useParams();

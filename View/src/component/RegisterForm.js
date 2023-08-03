@@ -5,14 +5,65 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import "../../src/assets/SignUp.css";
-import { Link } from "react-router-dom";
+import axios from "axios";
+
+import { Link, useNavigate } from "react-router-dom";
 
 function RegisterForm() {
   const [validated, setValidated] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true); // State to track password match
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [resMessage, setResMessage] = useState("");
+  const navigate = useNavigate();
+
+  //Generate Username using first and last name
+  function generateUsername(firstName, lastName) {
+    const firstLetter = firstName.charAt(0).toLowerCase();
+
+    const lowercasedLastName = lastName.toLowerCase();
+
+    const username = firstLetter + lowercasedLastName;
+
+    return username;
+  }
+
+  const submitUser = async () => {
+    try {
+      const username = generateUsername(firstName, lastName);
+
+      const response = await axios.post(
+        "http://localhost:8080/users/register",
+        {
+          username: username,
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.data;
+      console.log(data);
+
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+      setResMessage(err.response.data.message);
+      window.alert(err.response.data.message);
+    }
+  };
+
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+    event.preventDefault();
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -30,6 +81,8 @@ function RegisterForm() {
     }
 
     setValidated(true);
+    // console.log(`${firstName} ${lastName} ${password} ${confirmPassword}`);
+    submitUser();
   };
 
   return (
@@ -53,12 +106,18 @@ function RegisterForm() {
               required
               type="text"
               placeholder="الاسم الأول"
+              onChange={(e) => setFirstName(e.target.value)}
             />
             {/* <Form.Control.Feedback>يبدو جيدًا</Form.Control.Feedback> */}
           </Form.Group>
           <Form.Group as={Col} md="6" controlId="validationCustom02">
             {/* <Form.Label>Last name</Form.Label> */}
-            <Form.Control required type="text" placeholder="اسم العائلة" />
+            <Form.Control
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              type="text"
+              placeholder="اسم العائلة"
+            />
             {/* <Form.Control.Feedback>يبدو جيدًا</Form.Control.Feedback> */}
           </Form.Group>
           <Form.Group
@@ -72,6 +131,7 @@ function RegisterForm() {
               type="email"
               placeholder="البريد الإلكتروني"
               required
+              onChange={(e) => setEmail(e.target.value)}
             />
             <Form.Control.Feedback type="invalid">
               يرجى إدخال بريد إلكتروني صحيح
@@ -80,7 +140,12 @@ function RegisterForm() {
 
           <Form.Group as={Col} md="6" controlId="validationCustom04">
             {/* <Form.Label>Password</Form.Label> */}
-            <Form.Control type="password" placeholder="كلمة المرور" required />
+            <Form.Control
+              type="password"
+              placeholder="كلمة المرور"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Form.Control.Feedback type="invalid">
               يرجى إدخال كلمة المرور
             </Form.Control.Feedback>
@@ -91,6 +156,7 @@ function RegisterForm() {
               type="password"
               placeholder="تأكيد كلمة المرور"
               required
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             {passwordsMatch ? (
               <Form.Control.Feedback type="invalid">
