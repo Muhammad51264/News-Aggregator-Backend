@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
+import axios from "axios";
 
 const DataTable = () => {
-  // Sample data for the table (you can replace this with your data)
-  const initialData = [
-    {
-      id: 1,
-      name: "وزير الخارجية الأمريكي أنتوني بلينكن يلتقي الرئيس الصيني شي جين بينغ الإثنين",
-      publishDate: 25 / 7 / 2023,
-    },
-    {
-      id: 2,
-      name: "وزير الخارجية الأمريكي أنتوني بلينكن يلتقي الرئيس الصيني شي جين بينغ الإثنين",
-      publishDate: 25 - 7 - 2023,
-    },
-    // Add more data items here
-  ];
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchNewsData = async () => {
+      try {
+        const agencyID = "64c79b42da934de8cdb4e53d";
+
+        const response = await axios.get(
+          `http://localhost:8080/news/${agencyID}`
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching news data:", error);
+      }
+    };
+
+    fetchNewsData();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.post(`http://localhost:8080/agencies/delete/${id}`);
+      setData((prevData) => prevData.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error("Error deleting news item:", error);
+    }
+  };
 
   const handleEdit = (id) => {
-    // Handle the edit functionality here (e.g., open a modal, form, etc.)
     console.log("Edit item with ID:", id);
   };
-
-  const handleDelete = (id) => {
-    // Handle the delete functionality here (e.g., remove item from the data array)
-    setData((prevData) => prevData.filter((item) => item.id !== id));
-  };
-
   return (
     <Table striped bordered hover>
       <thead>
@@ -41,17 +47,17 @@ const DataTable = () => {
       </thead>
       <tbody>
         {data.map((item) => (
-          <tr key={item.id}>
-            <td>{item.id}</td>
-            <td>{item.name}</td>
-            <td>{item.publishDate}</td>
+          <tr key={item._id}>
+            <td>{item._id}</td>
+            <td>{item.title}</td>
+            <td>{item.data}</td>
             <td>
-              <Button variant="warning" onClick={() => handleEdit(item.id)}>
+              <Button variant="warning" onClick={() => handleEdit(item._id)}>
                 تعديل
               </Button>
             </td>
             <td>
-              <Button variant="danger" onClick={() => handleDelete(item.id)}>
+              <Button variant="danger" onClick={() => handleDelete(item._id)}>
                 حذف
               </Button>
             </td>

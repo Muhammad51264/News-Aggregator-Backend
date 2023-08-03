@@ -22,7 +22,7 @@ import UserTypeSelectionSignUp from "../pages/UserTypeSelectionSignUp";
 import SignUpAgency from "../pages/SignUpAgency";
 import UserTypeSelectionSignIn from "../pages/UserTypeSelectionSignIn";
 const Layout = () => {
-  const userType = "User";
+  const userType = "Agency";
   return (
     <BrowserRouter>
       <Header userType={userType} />
@@ -52,6 +52,7 @@ const Layout = () => {
         <Route path="/setting" Component={Setting} />
         <Route path="/account" Component={Account} />
         <Route path="/agencies" Component={Agencies} />
+        <Route path="/agency/news" Component={AgencyDashboard} />
       </Routes>
       <Footer />
     </BrowserRouter>
