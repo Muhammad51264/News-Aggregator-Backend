@@ -46,6 +46,7 @@ const Layout = () => {
         {userType === "Agency" && (
           <Route path="/signInAgency" Component={SignIn} />
         )}
+        <Route path="/admindashboard" Component={AgencyDashboard} />
         <Route path="/signup" Component={SignUp} />
         <Route path="/SignIn" Component={SignIn} />
         <Route path="/signUpAgency" Component={SignUpAgency} />

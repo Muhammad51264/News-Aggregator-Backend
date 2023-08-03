@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import { Link,useNavigate } from "react-router-dom";
+import {useCookies} from "react-cookie"
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,6 +14,8 @@ const SignUpAgency = () => {
   const [passwordFlag, setPasswordFlag] = useState("");
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [cookies, setCookies] = useCookies("access_token");
+
   const navigate =useNavigate();
 
 
@@ -42,6 +45,7 @@ try{
   )
 
   const data = await res.data;
+  setCookies("access_token",data.token);
   console.log(data);
   }
 catch(err){
@@ -55,7 +59,7 @@ useEffect(() => {
   if (emailFlag && passwordFlag) {
     try {
       submitAgency();
-      navigate("/");
+      navigate("/admindashboard");
     } catch (err) {
       console.log(err);
     }
