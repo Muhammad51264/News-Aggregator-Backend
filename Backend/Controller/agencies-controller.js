@@ -142,7 +142,7 @@ router.post("/delete/:id", async function (req, res) {
 
 router.post("/edit/:id", async function(req, res){
   const newsId = req.params.id;
-  console.log(newsId);
+  // console.log(newsId);
   const news = req.body;
   try {
   const foundNews=await News.findOne({_id : newsId});
@@ -150,7 +150,7 @@ router.post("/edit/:id", async function(req, res){
       return res.json({"Error": "no news found"});
   }
 
-  await News.updateOne({_id : newsId},{category:news.category,title:news.title,desc:news.desc,img:news.img});
+  await News.updateOne({_id : newsId},{category:news.category,title:news.title,desc:news.desc,img:news.img,date:news.date});
   console.log("news updated successfully");
   return res.json({"status": "Success"});
   } catch(err){

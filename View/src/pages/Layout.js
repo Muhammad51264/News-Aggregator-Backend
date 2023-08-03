@@ -33,39 +33,42 @@ const Layout = () => {
   const userType = "Agency";
   return (
     <NewsContext.Provider value={{ allNews, setAllNews }}>
-    <BrowserRouter>
-      <Header userType={userType} />
-      <Routes>
-        {userType === "User" && <Route path="/" Component={Home} />}
-        {userType === "Agency" && (
-          <Route path="/" Component={AgencyDashboard} />
-        )}
-        <Route path="/sports" Component={Sports} />
-        <Route path="/Details/:id" Component={Details} />
-        {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
-        {userType === "Agency" && (
-          <Route path="/signInAgency" Component={SignIn} />
-        )}
-        <Route path="/admindashboard" Component={AgencyDashboard} />
-        <Route path="/signup" Component={SignUp} />
-        <Route path="/SignIn" Component={SignIn} />
-        <Route path="/signUpAgency" Component={SignUpAgency} />
-        <Route path="/UserTypeSelection" Component={UserTypeSelectionSignUp} />
-        <Route
-          path="/UserTypeSelectionSignIn"
-          Component={UserTypeSelectionSignIn}
-        />
+      <BrowserRouter>
+        <Header userType={userType} />
+        <Routes>
+          {userType === "User" && <Route path="/" Component={Home} />}
+          {userType === "Agency" && (
+            <Route path="/" Component={AgencyDashboard} />
+          )}
+          <Route path="/sports" Component={Sports} />
+          <Route path="/Details/:id" Component={Details} />
+          {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
+          {userType === "Agency" && (
+            <Route path="/signInAgency" Component={SignIn} />
+          )}
+          <Route path="/admindashboard" Component={AgencyDashboard} />
+          <Route path="/signup" Component={SignUp} />
+          <Route path="/SignIn" Component={SignIn} />
+          <Route path="/signUpAgency" Component={SignUpAgency} />
+          <Route
+            path="/UserTypeSelection"
+            Component={UserTypeSelectionSignUp}
+          />
+          <Route
+            path="/UserTypeSelectionSignIn"
+            Component={UserTypeSelectionSignIn}
+          />
 
-        <Route path="/:type" Component={Category} />
-        <Route path="/live-broadcast" Component={LiveBroadCast} />
-        <Route path="/statistics" Component={Statistics} />
-        <Route path="/setting" Component={Setting} />
-        <Route path="/account" Component={Account} />
-        <Route path="/agencies" Component={Agencies} />
-        <Route path="/agency/news" Component={AgencyDashboard} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+          <Route path="/:type" Component={Category} />
+          <Route path="/live-broadcast" Component={LiveBroadCast} />
+          <Route path="/statistics" Component={Statistics} />
+          <Route path="/setting" Component={Setting} />
+          <Route path="/account" Component={Account} />
+          <Route path="/agencies" Component={Agencies} />
+          <Route path="/agency/news" Component={AgencyDashboard} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </NewsContext.Provider>
   );
 };
