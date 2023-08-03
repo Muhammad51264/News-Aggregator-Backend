@@ -11,3 +11,9 @@
     background-color: antiquewhite;
     width: 10px;;
 }
+.Register-Form{
+    /* box-shadow: 0px 0px 400px -31px #525d6c65; */
+    align-items: center;
+    padding: 2rem;
+    background-color: #f5f5f6;
+}

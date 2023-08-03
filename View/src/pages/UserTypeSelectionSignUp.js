@@ -20,7 +20,7 @@ const UserTypeSelectionSignUp = () => {
               <div className="d-flex flex-column justify-content-center gap-4 text-center align-items-center">
                 <Link
                   className="user-select-link "
-                  to="/signup"
+                  to="/SignUpUser"
                   style={{ color: "#27374D" }}
                 >
                   التسجيل كمستخدم عادي{" "}
