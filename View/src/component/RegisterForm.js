@@ -18,6 +18,11 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [errors, setErrors] = useState([]);
+
+  const [emailFlag, setEmailFlag] = useState("true");
+  const [passwordFlag, setPasswordFlag] = useState("");
   const [resMessage, setResMessage] = useState("");
   const navigate = useNavigate();
 
@@ -82,7 +87,67 @@ function RegisterForm() {
 
     setValidated(true);
     // console.log(`${firstName} ${lastName} ${password} ${confirmPassword}`);
-    submitUser();
+    saveData();
+    if (passwordFlag) {
+      submitUser();
+    }
+  };
+
+  const validatePassword = (password) => {
+    const lengthPattern = /^.{8,16}$/;
+    const uppercasePattern = /[A-Z]/;
+    const lowercasePattern = /[a-z]/;
+    const specialCharacterPattern = /[!@#$%^&*]/;
+    const numberPattern = /[0-9]/;
+
+    const errors = [];
+
+    if (!lengthPattern.test(password)) {
+      errors.push("يجب أن يكون طول الرقم السري بين 8 و 16 حرفًا");
+      setPasswordFlag(false);
+    }
+
+    if (!uppercasePattern.test(password)) {
+      errors.push("يجب أن يحتوي الرقم السري على حرف واحد كبير على الأقل");
+      setPasswordFlag(false);
+    }
+
+    if (!lowercasePattern.test(password)) {
+      errors.push("يجب أن يحتوي الرقم السري على حرف واحد صغير على الأقل");
+      setPasswordFlag(false);
+    }
+
+    if (!specialCharacterPattern.test(password)) {
+      errors.push(
+        "يجب أن يحتوي الرقم السري على حرف خاص واحد على الأقل (!@#$%^&*)"
+      );
+      setPasswordFlag(false);
+    }
+
+    if (!numberPattern.test(password)) {
+      errors.push("يجب أن يحتوي الرقم السري على رقم واحد على الأقل");
+      setPasswordFlag(false);
+    }
+    if (errors.length === 0) {
+      setPasswordFlag(true);
+    }
+    return errors;
+  };
+
+  const saveData = async () => {
+    if (password !== confirmPassword) {
+      setErrors(["الرقم السري وتأكيد الرقم السري لا يتطابقان"]);
+      setPasswordFlag(false);
+      return;
+    }
+
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+      setErrors(passwordErrors);
+      return;
+    }
+
+    setErrors([]);
   };
 
   return (
@@ -168,6 +233,25 @@ function RegisterForm() {
               </Form.Control.Feedback>
             )}
           </Form.Group>
+          {errors.length > 0 && (
+            <div>
+              <p
+                className="d-flex flex column justify-content-center"
+                style={{ color: "red" }}
+              >
+                يوجد أخطاء في الرقم السري:
+              </p>
+              {errors.map((error, index) => (
+                <p
+                  className="d-flex flex column justify-content-center"
+                  style={{ color: "red" }}
+                  key={index}
+                >
+                  {error}
+                </p>
+              ))}
+            </div>
+          )}
           <Form.Group
             as={Col}
             md="6"

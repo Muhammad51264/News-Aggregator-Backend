@@ -13,9 +13,9 @@ import { useNewsContext } from "../pages/Layout";
 
 const Category = () => {
   const params = useParams();
-  const props = params.category;
+  const props = params.type;
 
-  const [allNews, setAllNews] = useState([]);
+  const { allNews, setAllNews } = useNewsContext();
 
   useEffect(() => {
     // Fetch all news items from the backend API
