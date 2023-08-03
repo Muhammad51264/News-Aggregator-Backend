@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import axios from "axios";
+import {useCookies} from "react-cookie"
+
 
 const DataTable = () => {
   const [data, setData] = useState([]);
-
+  const [cookies, setCookies] = useCookies("access_token");
   useEffect(() => {
-    const fetchNewsData = async () => {
-      try {
-        const agencyID = "64c79b42da934de8cdb4e53d";
+    const fetchToken = async ()=>{
+      try{
+        const token = await axios.post("http://localhost:8080/agencies/token",{token: cookies.access_token});
+        console.log(cookies.access_token);
+        let res = await token.data;
+        console.log(res.id);
 
+        // const agencyID = id;
+        console.log(`http://localhost:8080/news/${res.id}`)
         const response = await axios.get(
-          `http://localhost:8080/news/${agencyID}`
+        `http://localhost:8080/news/${res.id}`
         );
         setData(response.data);
-      } catch (error) {
-        console.error("Error fetching news data:", error);
-      }
-    };
+      }catch(e){
+        console.log(e)
+    }}
 
-    fetchNewsData();
+    fetchToken()
+
   }, []);
 
   const handleDelete = async (id) => {

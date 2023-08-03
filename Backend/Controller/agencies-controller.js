@@ -159,4 +159,31 @@ router.post("/edit/:id", async function(req, res){
 });
 
 
+
+router.post("/token",async(req,res)=>{
+    token = req.body.token;
+    try{
+      let decodedToken= await jwt.decode(token,process.env.JWT_SECRET);
+
+      if(!decodedToken){
+        return res.json({status:"error", error:"Invalid token"});
+      }
+      let userId = decodedToken.id;
+      let foundUser = await Agencies.findOne({_id : userId});
+
+      if(!foundUser){
+        return res.json({status:"error", error:"Invalid user"});
+
+      }
+
+      return res.json({status:"success",id:userId});
+
+    }catch(err){
+      console.log(err);
+      return res.json({"error":err ,error:err.message});
+    }
+
+
+})
+
 module.exports = router;
