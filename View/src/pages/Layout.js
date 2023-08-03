@@ -31,7 +31,7 @@ export const useNewsContext = () => {
 };
 const Layout = () => {
   const [allNews, setAllNews] = useState([]);
-  const userType = "User";
+  const userType = "Agency";
   return (
     <NewsContext.Provider value={{ allNews, setAllNews }}>
       <BrowserRouter>
@@ -41,13 +41,13 @@ const Layout = () => {
           {userType === "Agency" && (
             <Route path="/" Component={AgencyDashboard} />
           )}
-          {/* <Route path="/sports" Component={Sports} /> */}
+          <Route path="/sports" Component={Sports} />
           <Route path="/Details/:id" Component={Details} />
           {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
           {userType === "Agency" && (
             <Route path="/signInAgency" Component={SignIn} />
           )}
-          <Route path="/SignUpUser" Component={SignUpUser} />
+          <Route path="/signup" Component={SignUp} />
           <Route path="/SignIn" Component={SignIn} />
           <Route path="/signUpAgency" Component={SignUpAgency} />
           <Route

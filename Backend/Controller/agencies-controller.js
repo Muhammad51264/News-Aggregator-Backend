@@ -40,7 +40,7 @@ router.post("/register",upload.single("img"), async function (req, res) {
       $or: [{ publisher: agency.publisher }, { email: agency.email }],
     });
     if (foundAgency) {
-      return res.json({ Error: "Email already registered" });
+      return res.json({status:"error", Error: "Email already registered" });
     }
 
     fs.renameSync(`Pictures/NewsPictures/${uploadedImage.filename}`,`Pictures/NewsPictures/${uploadedImage.filename}.jpg`)
@@ -50,7 +50,8 @@ router.post("/register",upload.single("img"), async function (req, res) {
 
       console.log("success",JSON.stringify(result, null, 2))
       imgURL=result.url;
-      console.log(imgURL);
+      // console.log(imgURL);
+      fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
     await Agencies.create({
       publisher : agency.publisher,
       img : imgURL,
@@ -63,7 +64,7 @@ router.post("/register",upload.single("img"), async function (req, res) {
     console.log("agencies created successfully");
     console.log(token);
 
-    fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
+    // fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
     return res.json({ status: "Success", token });
     }
 
@@ -158,5 +159,32 @@ router.post("/edit/:id", async function(req, res){
   }
 });
 
+
+
+router.post("/token",async(req,res)=>{
+    token = req.body.token;
+    try{
+      let decodedToken= await jwt.decode(token,process.env.JWT_SECRET);
+
+      if(!decodedToken){
+        return res.json({status:"error", error:"Invalid token"});
+      }
+      let userId = decodedToken.id;
+      let foundUser = await Agencies.findOne({_id : userId});
+
+      if(!foundUser){
+        return res.json({status:"error", error:"Invalid user"});
+
+      }
+
+      return res.json({status:"success",id:userId});
+
+    }catch(err){
+      console.log(err);
+      return res.json({"error":err ,error:err.message});
+    }
+
+
+})
 
 module.exports = router;

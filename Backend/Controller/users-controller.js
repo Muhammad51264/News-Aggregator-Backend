@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
 const router = express.Router();
 
+
 // Route for user registration
 router.post("/register", async (req, res) => {
   try {
@@ -64,5 +65,8 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "An error occurred during user login." });
   }
 });
+
+
+
 
 module.exports = router;

@@ -13,13 +13,13 @@ import { useNewsContext } from "../pages/Layout";
 // Add more objects
 
 const Home = () => {
+
   // const [allNews, setAllNews] = useState([]);
-  const { allNews, setAllNews } = useNewsContext();
+  const {allNews, setAllNews} =useNewsContext();
 
   useEffect(() => {
     // Fetch all news items from the backend API
-    axios
-      .get("http://localhost:8080/news/allNews")
+    axios.get("http://localhost:8080/news/allNews")
       .then((response) => {
         setAllNews(response.data);
       })
@@ -27,6 +27,7 @@ const Home = () => {
         console.error("Error fetching all news:", error);
       });
   }, []);
+
 
   return (
     <div className="">
@@ -46,7 +47,7 @@ const Home = () => {
             {/*landing page news*/}
             <Row className="d-flex justify-content-center gap-3 my-4">
               {allNews.map((newsItem) => {
-                return <NewCard data={newsItem} />;
+                return <NewCard data={newsItem}/>;
               })}
             </Row>
           </Col>

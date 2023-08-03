@@ -7,6 +7,7 @@ import NewDetails from "../pages/NewDetails";
 import "../assets/index.css";
 
 function NewCard({ data }) {
+
   return (
     <Card className="" style={{ width: "18rem", border: "none" }}>
       <Card.Img

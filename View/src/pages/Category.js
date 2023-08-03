@@ -13,6 +13,7 @@ import { useNewsContext } from "../pages/Layout";
 
 const Category = () => {
   const params = useParams();
+  console.log(params);
   const props = params.type;
 
   const { allNews, setAllNews } = useNewsContext();

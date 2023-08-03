@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const News = require("../Models/News"); 
-const Agencies = require("../Models/Agencies"); 
-
-
+const News = require("../Models/News");
+const Agencies = require("../Models/Agencies");
 
 router.get("/allNews", async (req, res) => {
   try {
@@ -17,27 +15,22 @@ router.get("/allNews", async (req, res) => {
   }
 });
 
-router.get("/:agencyName", async (req, res,)=>{
-try{
-  
-  const agencyName = req.params.agencyName;
+router.get("/:agencyID", async (req, res) => {
+  try {
+    const agencyID = req.params.agencyID;
 
-  const agency = await Agencies.findOne({ publisher: agencyName });
-  
-  if (!agency) {
-    return res.status(404).json({ error: "Agency not found" });
+    const agency = await Agencies.findOne({ _id: agencyID });
+
+    if (!agency) {
+      return res.status(404).json({ error: "Agency not found" });
+    }
+    const newsItems = await News.find({ publisher: agency.publisher });
+    res.json(newsItems);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  const newsItems = await News.find({ publisher: agencyName });
-   res.json(newsItems);
-}
-  catch (err) {
-  console.error(err);
-  res.status(500).json({ error: "Internal Server Error" });
-}
-
-
 });
-
 
 //get method   response  all news [{}]
 

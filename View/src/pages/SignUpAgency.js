@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import {useCookies} from "react-cookie"
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,38 +14,62 @@ const SignUpAgency = () => {
   const [passwordFlag, setPasswordFlag] = useState("");
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies("access_token");
 
-  const submitAgency = async () => {
+  const navigate =useNavigate();
+
+
+
+  const submitAgency= async()=>{
+try{
+
+  
+  const AgencyInfo = new FormData();
+  AgencyInfo.append("publisher", firstName);
+  AgencyInfo.append("email", email);
+  AgencyInfo.append("password", password);
+  AgencyInfo.append("img", selectedImage);
+    // {
+    //   publisher: firstName,
+    //   email: email,
+    //   password: password,
+    //   img: selectedImage
+    // }
+    const res= await axios.post('http://localhost:8080/agencies/register',
+    AgencyInfo
+    , {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  )
+
+  const data = await res.data;
+  if (data.status === "Success"){
+    setCookies("access_token",data.token);
+    navigate("/admindashboard");
+  }
+  console.log(data);
+  }
+catch(err){
+  console.log(err)
+}
+}
+
+
+
+useEffect(() => {
+  if (emailFlag && passwordFlag) {
     try {
-      await axios.post(
-        "http://localhost:8080/agencies/register",
-        {
-          publisher: firstName,
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      submitAgency();
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
-  useEffect(() => {
-    if (emailFlag && passwordFlag) {
-      try {
-        submitAgency();
-        navigate("/");
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }, [emailFlag, passwordFlag]);
+
+},[emailFlag,passwordFlag])
+
 
   const handlePostContentChange = (event) => {
     setPostContent(event.target.value);
@@ -134,7 +159,7 @@ const SignUpAgency = () => {
     return errors;
   };
 
-  const saveData = async () => {
+  const saveData = async() => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
@@ -204,12 +229,11 @@ const SignUpAgency = () => {
               إنشاء حساب لوكالة إخبارية
             </h4>
           </div>
-          <form
-            className="mb-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-              saveData();
-            }}
+          <form className="mb-5"
+          onSubmit={(e)=>{e.preventDefault();
+          saveData();
+          }}
+          
           >
             <div className="form-outline mb-4">
               <label
@@ -229,19 +253,21 @@ const SignUpAgency = () => {
             </div>
 
             <div className="form-outline mb-4">
-              <div className="mb-3">
-                <label htmlFor="postImage" className="form-label">
-                  اختر شعار الوكالة
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="postImage"
-                  onChange={handleImageChange}
-                  accept="image/*"
-                  capture="environment"
-                />
-              </div>
+            <div className="mb-3">
+                  <label htmlFor="postImage" className="form-label">
+                    اختر شعار الوكالة
+                  </label>
+                  <input
+                  required
+                    type="file"
+                    className="form-control"
+                    id="postImage"
+                    onChange={handleImageChange}
+                    accept="image/*"
+                    capture="environment"
+                  />
+                </div>
+
             </div>
 
             <div className="form-outline mb-4">

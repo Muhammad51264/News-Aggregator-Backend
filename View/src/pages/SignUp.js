@@ -12,8 +12,6 @@ const SignUp = () => {
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
   const navigate = useNavigate();
-  const [registerResponse, setRegisterResponse] = useState("");
-  const [errorBackend, setErrorBackend] = useState("");
 
   function generateUsername(firstName, lastName) {
     // Get the first letter of the first name (converted to lowercase)
@@ -30,10 +28,8 @@ const SignUp = () => {
 
   const submitUser = async () => {
     try {
-      setErrorBackend("");
       const username = generateUsername(firstName, lastName);
-
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8080/users/register",
         {
           username: username,
@@ -46,27 +42,20 @@ const SignUp = () => {
           },
         }
       );
-
-      setRegisterResponse(response.data);
-      return true; // Return true indicating successful registration
     } catch (err) {
-      setErrorBackend(
-        err.response?.data?.message ||
-          "An error occurred while processing your request."
-      );
-      return false; // Return false indicating failed registration
+      console.log(err);
     }
   };
-
   useEffect(() => {
-    if (emailFlag && passwordFlag && errorBackend.length === 0) {
-      const registerSuccess = submitUser();
-      if (registerSuccess) {
-        console.log("Successfully registered");
+    if (emailFlag && passwordFlag) {
+      try {
+        submitUser();
         navigate("/");
+      } catch (err) {
+        console.log(err);
       }
     }
-  }, [emailFlag, passwordFlag, errorBackend]);
+  }, [emailFlag, passwordFlag]);
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -256,18 +245,16 @@ const SignUp = () => {
                 onChange={handleConfirmPasswordChange}
               />
             </div>
-            {errorBackend.length > 1 ||
-              (errors.length > 0 && (
-                <div>
-                  <p style={{ color: "red" }}>يوجد أخطاء في الرقم السري:</p>
-                  {errors.map((error, index) => (
-                    <p style={{ color: "red" }} key={index}>
-                      {error}
-                    </p>
-                  ))}
-                  <p>{errorBackend}</p>
-                </div>
-              ))}
+            {errors.length > 0 && (
+              <div>
+                <p style={{ color: "red" }}>يوجد أخطاء في الرقم السري:</p>
+                {errors.map((error, index) => (
+                  <p style={{ color: "red" }} key={index}>
+                    {error}
+                  </p>
+                ))}
+              </div>
+            )}
             <div className="row px-5">
               <button
                 className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
