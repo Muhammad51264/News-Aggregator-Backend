@@ -39,9 +39,11 @@ const Layout = () => {
 
   const userType = "User";
   return (
+
     <NewsContext.Provider
       value={{ allNews, setAllNews, allAgencies, setAllAgencies }}
     >
+
       <BrowserRouter>
         <Header userType={userType} />
         <Routes>
@@ -55,6 +57,9 @@ const Layout = () => {
           {userType === "Agency" && (
             <Route path="/signInAgency" Component={SignIn} />
           )}
+
+          <Route path="/admindashboard" Component={AgencyDashboard} />
+
           <Route path="/signup" Component={SignUp} />
           <Route path="/SignIn" Component={SignIn} />
           <Route path="/signUpAgency" Component={SignUpAgency} />
@@ -73,6 +78,9 @@ const Layout = () => {
           <Route path="/setting" Component={Setting} />
           <Route path="/account" Component={Account} />
           <Route path="/agencies" Component={Agencies} />
+
+          <Route path="/agency/news" Component={AgencyDashboard} />
+
         </Routes>
         <Footer />
       </BrowserRouter>
