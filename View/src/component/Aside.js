@@ -1,12 +1,20 @@
 import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import axios from "axios";
 
 import Calendar from "./Calender";
 import Weather from "./Weather";
 import Container from "react-bootstrap/Container";
 import "../assets/index.css";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { createContext, useContext } from "react";
+const AgenciesContext = createContext();
+
+export const useAgenciesContext = () => {
+  return useContext(AgenciesContext);
+};
 const newsAgencies = [
   {
     name: "وكالة عمون الإخبارية",
@@ -49,7 +57,18 @@ const newsAgencies = [
 
 const Aside = () => {
   //display block for Aside when the width greater than 992 and disappear when the width less than 992
-
+  const [allAgencies, setAllAgencies] = useState([]);
+  useEffect(() => {
+    // Fetch all news items from the backend API
+    axios
+      .get("http://localhost:8080/agencies/allAgencies")
+      .then((response) => {
+        setAllAgencies(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching all news:", error);
+      });
+  }, []);
   const [isViewportWideEnough, setIsViewportWideEnough] = useState(
     window.innerWidth > 992
   );
@@ -111,15 +130,15 @@ const Aside = () => {
             </Col>
           </Row>
           <Row className="aside-news-agencies d-flex gap-4">
-            {newsAgencies.map((newsAgency) => (
-              <img src={newsAgency.image} alt={newsAgency.name} />
+            {allAgencies.map((newsAgency) => (
+              <img src={newsAgency.img} alt={newsAgency.publisher} />
             ))}
-            <a
-              href="#"
+            <Link
+              to="/agencies"
               className="text-start text-decoration-none text-dark pointer"
             >
               المزيد
-            </a>
+            </Link>
           </Row>
 
           <Row>
