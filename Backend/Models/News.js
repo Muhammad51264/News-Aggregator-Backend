@@ -14,7 +14,7 @@ const newsSchema = new mongoose.Schema({
 
         img :  {
             type:String , 
-            required:true 
+            required:false 
               },
         title: {
             type:String , 

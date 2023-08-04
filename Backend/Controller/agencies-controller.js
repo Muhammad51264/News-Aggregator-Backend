@@ -19,7 +19,7 @@ cloudinary.config({
 });
 
 //Get all Agencies
-router.get("/allAgencies", async function (req, res) {
+router.get("/", async function (req, res) {
   try {
     const allAgencies = await Agencies.find();
     return res.json(allAgencies);
@@ -73,6 +73,7 @@ router.post("/register", upload.single("img"), async function (req, res) {
       .catch((err) => {
         console.log("failed");
         console.log("error", JSON.stringify(err, null, 2));
+        fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
       });
     console.log(imgURL);
   } catch (err) {
@@ -143,7 +144,7 @@ router.post("/delete/:id", async function (req, res) {
 
 router.post("/edit/:id", async function (req, res) {
   const newsId = req.params.id;
-  console.log(newsId);
+  // console.log(newsId);
   const news = req.body;
   try {
     const foundNews = await News.findOne({ _id: newsId });
@@ -151,20 +152,13 @@ router.post("/edit/:id", async function (req, res) {
       return res.json({ Error: "no news found" });
     }
 
-    await News.updateOne(
-      { _id: newsId },
-      {
-        category: news.category,
-        title: news.title,
-        desc: news.desc,
-        img: news.img,
-      }
-    );
-    console.log("news updated successfully");
-    return res.json({ status: "Success" });
-  } catch (err) {
-    console.log(err);
-    return res.json({ error: err });
+  await News.updateOne({_id : newsId},{category:news.category,title:news.title,desc:news.desc,img:news.img,date:news.date});
+  console.log("news updated successfully");
+  return res.json({"status": "Success"});
+  } catch(err){
+      console.log(err);
+      return res.json({"error": err});
+
   }
 });
 
