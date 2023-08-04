@@ -39,6 +39,7 @@ router.post("/register", upload.single("img"), async function (req, res) {
       $or: [{ publisher: agency.publisher }, { email: agency.email }],
     });
     if (foundAgency) {
+      fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}`);
       return res.json({ status: "error", Error: "Email already registered" });
     }
 
@@ -73,9 +74,9 @@ router.post("/register", upload.single("img"), async function (req, res) {
       .catch((err) => {
         console.log("failed");
         console.log("error", JSON.stringify(err, null, 2));
-        fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
+        fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}`);
       });
-    console.log(imgURL);
+
   } catch (err) {
     console.log(err);
     return res.json({ error: err });
@@ -84,42 +85,69 @@ router.post("/register", upload.single("img"), async function (req, res) {
 
 // login for agencies
 router.post("/login", async function (req, res) {
-  const { email, password, userType } = req.body;
+  const { email, password } = req.body;
   try {
     const foundAgency = await Agencies.findOne({ email: email });
     if (!foundAgency) {
-      return res.json({ message: "Agency didn't existi!" });
+      return res.json({status:"error", message: "Agency didn't exist!" });
     }
     const isPasswordValid = await bcrypt.compare(
       password,
       foundAgency.password
     );
     if (!isPasswordValid) {
-      return res.json({ message: "Username or Password is not correct" });
+      return res.json({status:"error", message: "Username or Password is not correct" });
     }
 
     const token = jwt.sign({ id: foundAgency._id }, process.env.JWT_SECRET);
 
-    return res.json({ token, adminID: foundAgency._id });
+    return res.json({status:"success", token, adminID: foundAgency._id });
   } catch (err) {
     console.log(err);
     return res.json({ error: err });
   }
 });
 
-router.post("/add", async function (req, res) {
+router.post("/add",upload.single("img"), async function (req, res) {
   const news = req.body;
+  const uploadedImage = req.file;
+
   try {
     const foundNews = await News.findOne({ title: news.title });
     if (foundNews) {
-      return res.json({ Error: "News already registered" });
+     
+      fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}`);
+      return res.json({status:"error", error: "News already registered" });
     }
-    await News.create(news);
-    console.log("news created successfully");
-    return res.json({ status: "Success" });
+    
+      fs.renameSync(
+        `Pictures/NewsPictures/${uploadedImage.filename}`,
+        `Pictures/NewsPictures/${uploadedImage.filename}.jpg`
+      );
+
+
+    cloudinary.uploader
+      .upload(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`, {
+        resource_type: "image",
+      })
+      .then(async (result) => {
+        console.log("success", JSON.stringify(result, null, 2));
+        // console.log(imgURL);
+        await News.create({category: news.category, title: news.title, publisher:news.publisher, img:result.url, date:news.date,desc:news.desc,comments:[]});
+        fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
+        console.log("news created successfully");
+        const agencyNews=await News.find({publisher: news.publisher});
+        return res.json({status:"success", allNews: agencyNews});
+      }
+        ).catch((err) => {
+          console.log("error", JSON.stringify(err, null, 2));
+          fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}`);
+          res.json({status:"error" ,error: "failed" });
+        });
+
   } catch (err) {
     console.log(err);
-    return res.json({ error: err });
+    return res.json({status:"error", error: err.message });
   }
 });
 
@@ -177,7 +205,7 @@ router.post("/token", async (req, res) => {
       return res.json({ status: "error", error: "Invalid user" });
     }
 
-    return res.json({ status: "success", id: userId });
+    return res.json({ status: "success", id: userId ,username:foundUser.publisher});
   } catch (err) {
     console.log(err);
     return res.json({ error: err, error: err.message });

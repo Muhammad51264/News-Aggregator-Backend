@@ -3,10 +3,6 @@
 const mongoose = require('mongoose');
 const newsSchema = new mongoose.Schema({
 
-  publisher:{
-    type:String , 
-    required:true 
-      },
         category: {
         type:String , 
         required:true 
@@ -14,7 +10,7 @@ const newsSchema = new mongoose.Schema({
 
         img :  {
             type:String , 
-            required:false 
+            required:true 
               },
         title: {
             type:String , 

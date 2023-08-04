@@ -3,6 +3,7 @@ import { Table, Button } from "react-bootstrap";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./../assets/popup.css";
+import {useDataContext} from "../pages/AgencyDashboard"
 
 const categoryOptions = [
   "breaking",
@@ -15,8 +16,10 @@ const categoryOptions = [
 ];
 
 const DataTable = () => {
-  const [data, setData] = useState([]);
-  const [cookies] = useCookies(["access_token"]);
+  const {data, setData} =useDataContext();
+  // const [data, setData] = useState([]);
+  const [cookies] = useCookies("access_token");
+  const [publisher,setPublisher] = useCookies("name");
   const [showPopup, setShowPopup] = useState(false);
   const [updateTitle, setUpdateTitle] = useState("");
   const [updateCategory, setUpdateCategory] = useState("");
@@ -36,6 +39,9 @@ const DataTable = () => {
           token: cookies.access_token,
         });
         const res = await token.data;
+        // const userName= res.username;
+        // console.log(res.username)
+        setPublisher("name",res.username);
         const response = await axios.get(
           `http://localhost:8080/news/${res.id}`
         );
@@ -45,7 +51,7 @@ const DataTable = () => {
       }
     };
     fetchData();
-  }, [cookies.access_token]);
+  }, []);
 
   const handleDelete = async (id) => {
     try {
@@ -72,15 +78,21 @@ const DataTable = () => {
         console.log("No token");
         return;
       }
-
-      const updatePayload = {
-        _id: updateId,
-        category: updateCategory,
-        title: updateTitle,
-        desc: updateDesc,
-        img: updateImg,
-        date: new Date().toISOString(), // Set the 'date' field with the current date
-      };
+      const updatePayload = new FormData();
+      updatePayload.append("_id", updateId);
+      updatePayload.append("category", updateCategory);
+      updatePayload.append("title", updateTitle);
+      updatePayload.append("desc", updateDesc);
+      updatePayload.append("img" ,updateImg);
+      updatePayload.append("date", new Date().toISOString());
+      // const updatePayload = {
+      //   _id: updateId,
+      //   category: updateCategory,
+      //   title: updateTitle,
+      //   desc: updateDesc,
+      //   img: updateImg,
+      //   date: new Date().toISOString(), // Set the 'date' field with the current date
+      // };
 
       await axios.post(
         `http://localhost:8080/agencies/edit/${updatePayload._id}`,

@@ -1,6 +1,6 @@
 import "../assets/index.css";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import axios from "axios";
 import "../assets/index.css";
 import {useCookies} from "react-cookie"
@@ -11,7 +11,7 @@ const SignInAgency = () => {
   const [password, setPassword] = useState("");
   const [emailFlag, setEmailFlag] = useState("");
   const [error,setError] = useState("");
-  const [_, setCookies] = useCookies(["access_token"]);
+  const [cookies, setCookies] = useCookies("access_token");
   
   const navigate = useNavigate()
   
@@ -40,6 +40,13 @@ const SignInAgency = () => {
     } else {
       setEmailFlag(false);
     }
+
+
+
+
+  };
+
+  const submitUser = async ()=>{
     try {
       console.log(email, password);
       const response = await axios.post(
@@ -54,14 +61,27 @@ const SignInAgency = () => {
       // endpoint
       
       // const [_, setCookies] = useCookies(["access_token"]);
-      const token = await response.data;
-      console.log(token);
-      setCookies("access_token", token);
-      navigate('/')
+  
+      const result = await response.data;
+      console.log(result);
+      if (result.status === "error") {
+        console.log(result.message);
+      }
+      if (result.status === "success") {
+        console.log(result.token);
+        setCookies("access_token", result.token);
+        navigate('/admindashboard')
+      }
+
     } catch (err) {
       console.log(err.message);
     }
-  };
+  }
+  useEffect(() => {
+    if (emailFlag) {
+      submitUser()
+    }
+  },[emailFlag])
 
   return (
     <section>
