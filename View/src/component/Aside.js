@@ -61,7 +61,7 @@ const Aside = () => {
   useEffect(() => {
     // Fetch all news items from the backend API
     axios
-      .get("http://localhost:8080/agencies/allAgencies")
+      .get("http://localhost:8080/agencies")
       .then((response) => {
         setAllAgencies(response.data);
       })
