@@ -2,15 +2,26 @@ import { Container, Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
-
-import "bootstrap/dist/css/bootstrap.min.css";
+import "../../src/assets/SignUp.css";
 
 const UserTypeSelectionSignUp = () => {
   return (
-    <Container className="d-flex justify-content-center">
+    <Container fluid className="userType-selection-signUp vh-100">
       <Row>
-        <Col>
-          <Card className="user-type-selection mt-5" style={{ width: "25rem" }}>
+        <h4 className="mt-5">
+          <Link
+            to="/"
+            className="text-light ml-4"
+            style={{ textDecoration: "none", paddingRight: "2rem" }}
+          >
+            <span style={{ color: "#fff" }}>المحطة</span>{" "}
+            <span style={{ color: "#EF4747" }}>الإخبارية</span>
+          </Link>
+        </h4>{" "}
+      </Row>
+      <Row className="mt-5">
+        <Col className="d-flex justify-content-center align-items-center">
+          <Card className="user-type-selection mt-5" style={{ width: "40rem" }}>
             <Card.Body className="d-flex flex-column gap-2">
               <Card.Title className="text-center">اختر نوع السحاب</Card.Title>
               <Card.Subtitle className="mb-2 text-muted text-center">

@@ -17,3 +17,10 @@
     padding: 2rem;
     background-color: #f5f5f6;
 }
+.userType-selection-signUp{
+    background: rgb(2,0,36);
+background: linear-gradient(-45deg, #272f3a 40%, rgba(239,71,71,1) 100%);
+}
+.user-type-selection{
+
+}
