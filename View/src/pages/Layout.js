@@ -24,6 +24,7 @@ import SignUpAgency from "../pages/SignUpAgency";
 import UserTypeSelectionSignIn from "../pages/UserTypeSelectionSignIn";
 import { createContext, useContext, useState } from "react";
 import AgencyNews from "../pages/AgencyNews";
+import signUpUser from "../pages/SignUpUser";
 
 const NewsContext = createContext();
 
@@ -51,7 +52,7 @@ const Layout = () => {
 
           <Route path="/admindashboard" Component={AgencyDashboard} />
 
-          <Route path="/signup" Component={SignUp} />
+          <Route path="/signUpUser" Component={signUpUser} />
           <Route path="/SignIn" Component={SignIn} />
           <Route path="/signUpAgency" Component={SignUpAgency} />
           <Route
