@@ -63,9 +63,12 @@ const AgencyNews = () => {
         <AddsBanner />
 
         <Row className="d-flex justify-content-center gap-4 my-5">
-          {agencyNews.map((obj) => (
-            <NewCard data={obj} />
-          ))}
+          {agencyNews
+            .slice()
+            .reverse()
+            .map((obj) => (
+              <NewCard data={obj} key={obj.id} />
+            ))}
         </Row>
       </Row>
 

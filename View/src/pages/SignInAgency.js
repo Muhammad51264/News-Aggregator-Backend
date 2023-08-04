@@ -12,7 +12,9 @@ const SignInAgency = () => {
   const [emailFlag, setEmailFlag] = useState("");
   const [error,setError] = useState("");
   const [cookies, setCookies] = useCookies("access_token");
-  
+  const [userType, setUserType] = useCookies("user");
+  // const [change,setChange] = useState("");
+
   const navigate = useNavigate()
   
   const handleEmailChange = (event) => {
@@ -48,7 +50,6 @@ const SignInAgency = () => {
 
   const submitUser = async ()=>{
     try {
-      console.log(email, password);
       const response = await axios.post(
         "http://localhost:8080/agencies/login",
         {
@@ -69,8 +70,9 @@ const SignInAgency = () => {
       }
       if (result.status === "success") {
         console.log(result.token);
+        setUserType("user","Agency");
         setCookies("access_token", result.token);
-        navigate('/admindashboard')
+        navigate("/admindashboard");
       }
 
     } catch (err) {
@@ -79,9 +81,12 @@ const SignInAgency = () => {
   }
   useEffect(() => {
     if (emailFlag) {
-      submitUser()
+      submitUser();
+      
     }
   },[emailFlag])
+
+
 
   return (
     <section>

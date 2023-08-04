@@ -3,6 +3,7 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import { Link,useNavigate } from "react-router-dom";
 import {useCookies} from "react-cookie"
+
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -15,6 +16,7 @@ const SignUpAgency = () => {
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [cookies, setCookies] = useCookies("access_token");
+  const [userType, setUserType] = useCookies("user");
 
   const navigate =useNavigate();
 
@@ -47,6 +49,7 @@ try{
   const data = await res.data;
   if (data.status === "Success"){
     setCookies("access_token",data.token);
+    setUserType("user","Agency");
     navigate("/admindashboard");
   }
   console.log(data);
@@ -69,6 +72,7 @@ useEffect(() => {
 
 
 },[emailFlag,passwordFlag])
+
 
 
   const handlePostContentChange = (event) => {

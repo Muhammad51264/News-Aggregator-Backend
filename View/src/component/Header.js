@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Container, Row, Col, Nav } from "react-bootstrap";
 import { Form, FormControl, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -7,19 +7,28 @@ import SignUp from "../pages/SignUp";
 import AgencyDashboard from "../pages/AgencyDashboard";
 import "../assets/index.css";
 import Agencies from "../pages/Agencies";
+import {useCookies} from "react-cookie"
 
-const Header = ({ userType }) => {
+const Header = () => {
+  const [userType, setUserType] = useCookies("user");
+
+
+
   const currentDate = new Date().toLocaleDateString("ar-AR", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-    numberingSystem: "arab",
+    numberingSystem: "arab",  
+
   });
+
+
+
   return (
     <Container fluid>
       {/* Second section */}
-      {userType === "Agency" && (
+      {userType.user === "Agency" && (
         <>
           <Row className="head p-3 px-4 ">
             <Col>
@@ -94,7 +103,7 @@ const Header = ({ userType }) => {
                     href="#section1"
                     className=" text-light px-2 main-news"
                   >
-                    <Link to="/" style={{ textDecoration: "none" }}>
+                    <Link to="/admindashboard" style={{ textDecoration: "none" }}>
                       {" "}
                       <span style={{ color: "#EF4747" }}> لوحة التحكم</span>
                     </Link>
@@ -158,7 +167,7 @@ const Header = ({ userType }) => {
           </Row>
         </>
       )}
-      {userType === "User" && (
+      {userType.user !== "Agency" && (
         <>
           <Row className="head p-3 px-4 ">
             <Col>

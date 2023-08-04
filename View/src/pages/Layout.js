@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../component/Header";
 import Footer from "../component/Footer";
 import Sports from "./Sports";
 import Category from "./Category";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import Details from "./Details";
 import SignIn from "./SignIn";
@@ -26,35 +26,59 @@ import { createContext, useContext, useState } from "react";
 import AgencyNews from "../pages/AgencyNews";
 import signUpUser from "../pages/SignUpUser";
 
+
 const NewsContext = createContext();
 
 export const useNewsContext = () => {
   return useContext(NewsContext);
 };
+
+const AppLayout = ()=>(
+  <>
+    <Header />
+  <Outlet/>
+  <Footer />
+  </>
+
+)
+
 const Layout = () => {
   const [allNews, setAllNews] = useState([]);
-  const userType = "User";
+
+  // useEffect(() => {
+  //   const userFromCookies = userType.user;
+  //   if (userFromCookies !== undefined) {
+
+  //   }
+  // }, [userType.user]);
   return (
     <NewsContext.Provider value={{ allNews, setAllNews }}>
       <BrowserRouter>
-        <Header userType={userType} />
         <Routes>
-          {userType === "User" && <Route path="/" Component={Home} />}
-          {userType === "Agency" && (
-            <Route path="/" Component={AgencyDashboard} />
-          )}
+
+          <Route element={<AppLayout />}>
+          <Route path="/" Component={Home} />
+          
           {/* <Route path="/sports" Component={Sports} /> */}
           <Route path="/Details/:id" Component={Details} />
           {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
-          {userType === "Agency" && (
-            <Route path="/signInAgency" Component={SignIn} />
-          )}
-
+          
           <Route path="/admindashboard" Component={AgencyDashboard} />
+          <Route path="/:type" Component={Category} />
+          <Route path="/agencies/:id" Component={AgencyNews} />
+          <Route path="/live-broadcast" Component={LiveBroadCast} />
+          <Route path="/statistics" Component={Statistics} />
+          <Route path="/setting" Component={Setting} />
+          <Route path="/account" Component={Account} />
+          <Route path="/agencies" Component={Agencies} />
+          </Route>
+ 
 
           <Route path="/signUpUser" Component={signUpUser} />
           <Route path="/SignIn" Component={SignIn} />
           <Route path="/signUpAgency" Component={SignUpAgency} />
+          <Route path="/signInAgency" Component={SignInAgency} />
+
           <Route
             path="/UserTypeSelection"
             Component={UserTypeSelectionSignUp}
@@ -64,17 +88,9 @@ const Layout = () => {
             Component={UserTypeSelectionSignIn}
           />
 
-          <Route path="/:type" Component={Category} />
-          <Route path="/agencies/:id" Component={AgencyNews} />
-          <Route path="/live-broadcast" Component={LiveBroadCast} />
-          <Route path="/statistics" Component={Statistics} />
-          <Route path="/setting" Component={Setting} />
-          <Route path="/account" Component={Account} />
-          <Route path="/agencies" Component={Agencies} />
 
-          <Route path="/agency/news" Component={AgencyDashboard} />
+
         </Routes>
-        <Footer />
       </BrowserRouter>
     </NewsContext.Provider>
   );

@@ -177,16 +177,76 @@ router.post("/delete/:id", async function (req, res) {
   }
 });
 
-router.post("/edit/:id", async function (req, res) {
+router.post("/edit/:id", upload.single("img"), async function (req, res) {
   const newsId = req.params.id;
   // console.log(newsId);
   const news = req.body;
+  let updatedImg = req.file;
+  console.log(newsId);
+  console.log(updatedImg);
+  console.log(news);
+
   try {
     const foundNews = await News.findOne({ _id: newsId });
     if (!foundNews) {
-      return res.json({ Error: "no news found" });
+      if (updatedImg) {
+        fs.unlinkSync(`Pictures/NewsPictures/${updatedImg.filename}`);
+      }
+      return res.json({ status: "error", error: "no news found" });
     }
+    if (!updatedImg) {
+      // fs.unlinkSync(`Pictures/NewsPictures/${updatedImg.filename}`);
+      let user = await News.findOne({ _id: newsId });
+      updatedImg = user.img;
+      await News.updateOne(
+        { _id: newsId },
+        {
+          category: news.category,
+          title: news.title,
+          desc: news.desc,
+          img: updatedImg,
+          date: news.date,
+        }
+      );
+      console.log("news updated successfully");
+      return res.json({ status: "success", message: "edited successfully" });
+    } else {
+      fs.renameSync(
+        `Pictures/NewsPictures/${updatedImg.filename}`,
+        `Pictures/NewsPictures/${updatedImg.filename}.jpg`
+      );
+      cloudinary.uploader
+        .upload(`Pictures/NewsPictures/${updatedImg.filename}.jpg`, {
+          resource_type: "image",
+        })
+        .then(async (result) => {
+          console.log("success", JSON.stringify(result, null, 2));
+          imgURL = result.url;
+          // console.log(imgURL);
+          fs.unlinkSync(`Pictures/NewsPictures/${updatedImg.filename}.jpg`);
 
+          await News.updateOne(
+            { _id: newsId },
+            {
+              category: news.category,
+              title: news.title,
+              desc: news.desc,
+              img: imgURL,
+              date: news.date,
+            }
+          );
+          // fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
+          return res.json({
+            status: "Success",
+            message: "edited successfully with image",
+          });
+        })
+        .catch((err) => {
+          console.log("failed");
+          console.log("error", JSON.stringify(err, null, 2));
+          fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}`);
+        });
+    }
     await News.updateOne(
       { _id: newsId },
       {
