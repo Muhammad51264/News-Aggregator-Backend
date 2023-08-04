@@ -72,7 +72,10 @@ const Agencies = ({ children }) => {
         <Row className="d-flex  justify-content-between align-items-center gap-4 mb-3">
           {allAgencies.map((newsAgency) => (
             <Col className="text-center d-flex justify-content-center align-items-center">
-              <Link style={{ textDecoration: "none" }} to="/">
+              <Link
+                style={{ textDecoration: "none" }}
+                to={`/agencies/${newsAgency._id}`}
+              >
                 <Card className="mb-5" style={{ width: "15rem" }}>
                   <Card.Img
                     variant="top"
