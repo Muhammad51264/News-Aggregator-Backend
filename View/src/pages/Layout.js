@@ -23,27 +23,18 @@ import UserTypeSelectionSignUp from "../pages/UserTypeSelectionSignUp";
 import SignUpAgency from "../pages/SignUpAgency";
 import UserTypeSelectionSignIn from "../pages/UserTypeSelectionSignIn";
 import { createContext, useContext, useState } from "react";
+import AgencyNews from "../pages/AgencyNews";
 
 const NewsContext = createContext();
-const AgenciesContext = createContext();
 
 export const useNewsContext = () => {
   return useContext(NewsContext);
 };
-export const useAgenciesContext = () => {
-  return useContext(AgenciesContext);
-};
 const Layout = () => {
   const [allNews, setAllNews] = useState([]);
-  const [allAgencies, setAllAgencies] = useState([]);
-
   const userType = "User";
   return (
-
-    <NewsContext.Provider
-      value={{ allNews, setAllNews, allAgencies, setAllAgencies }}
-    >
-
+    <NewsContext.Provider value={{ allNews, setAllNews }}>
       <BrowserRouter>
         <Header userType={userType} />
         <Routes>
@@ -51,7 +42,7 @@ const Layout = () => {
           {userType === "Agency" && (
             <Route path="/" Component={AgencyDashboard} />
           )}
-          <Route path="/sports" Component={Sports} />
+          {/* <Route path="/sports" Component={Sports} /> */}
           <Route path="/Details/:id" Component={Details} />
           {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
           {userType === "Agency" && (
@@ -73,6 +64,7 @@ const Layout = () => {
           />
 
           <Route path="/:type" Component={Category} />
+          <Route path="/agencies/:id" Component={AgencyNews} />
           <Route path="/live-broadcast" Component={LiveBroadCast} />
           <Route path="/statistics" Component={Statistics} />
           <Route path="/setting" Component={Setting} />
@@ -80,7 +72,6 @@ const Layout = () => {
           <Route path="/agencies" Component={Agencies} />
 
           <Route path="/agency/news" Component={AgencyDashboard} />
-
         </Routes>
         <Footer />
       </BrowserRouter>
