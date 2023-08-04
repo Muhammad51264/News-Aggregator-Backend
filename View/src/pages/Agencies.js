@@ -51,9 +51,10 @@ const Agencies = ({ children }) => {
   useEffect(() => {
     // Fetch all news items from the backend API
     axios
-      .get("http://localhost:8080/agencies/allAgencies")
+      .get("http://localhost:8080/agencies")
       .then((response) => {
         setAllAgencies(response.data);
+        console.log(allAgencies);
       })
       .catch((error) => {
         console.error("Error fetching all news:", error);

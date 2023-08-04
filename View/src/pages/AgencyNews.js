@@ -25,7 +25,7 @@ const AgencyNews = () => {
       });
     // Fetch all agencies from the backend API
     axios
-      .get("http://localhost:8080/agencies/allAgencies")
+      .get("http://localhost:8080/agencies")
       .then((response) => {
         setAllAgencies(response.data);
 
