@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import CreatePostField from "../component/CreatePostField";
 import DataTable from "../component/DataTable";
 import "../assets/AgencyDashboard.css";
 import { createContext, useContext, useState } from "react";
+import {useCookies} from "react-cookie"
+import { useNavigate } from "react-router-dom";
 
 const DataContext = createContext();
 
@@ -12,6 +14,16 @@ export const useDataContext = () => {
 };
 const AgencyDashboard = () => {
 const [data,setData]=useState([]);
+const [userType, setUserType] = useCookies("user");
+const navigate=useNavigate();
+
+
+useEffect(() => {
+  if (userType.user !== "Agency"){
+    navigate("/");
+  }
+
+},[])
   return (
     <DataContext.Provider value={{data,setData}}>
     <Container>

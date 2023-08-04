@@ -27,7 +27,7 @@ const UserTypeSelectionSignIn = () => {
                 </Link>
                 <Link
                   className="agency-select-link text-light"
-                  to="/signIn"
+                  to="/signInAgency"
                   style={{ color: "#27374D" }}
                 >
                   الدخول كوكالة إخبارية{" "}

@@ -51,7 +51,7 @@ const DataTable = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [data]);
 
   const handleDelete = async (id) => {
     try {
@@ -83,7 +83,7 @@ const DataTable = () => {
       updatePayload.append("category", updateCategory);
       updatePayload.append("title", updateTitle);
       updatePayload.append("desc", updateDesc);
-      updatePayload.append("img" ,updateImg);
+      updatePayload.append("img" ,selectedImage);
       updatePayload.append("date", new Date().toISOString());
       // const updatePayload = {
       //   _id: updateId,
@@ -94,11 +94,11 @@ const DataTable = () => {
       //   date: new Date().toISOString(), // Set the 'date' field with the current date
       // };
 
-      await axios.post(
-        `http://localhost:8080/agencies/edit/${updatePayload._id}`,
+      let update =await axios.post(
+        `http://localhost:8080/agencies/edit/${updateId}`,
         updatePayload
       );
-
+      console.log(await update.data);
       const updatedData = data.map((item) =>
         item._id === updatePayload._id ? { ...item, ...updatePayload } : item
       );
