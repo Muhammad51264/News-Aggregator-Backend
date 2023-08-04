@@ -17,7 +17,7 @@ const UserTypeSelectionSignUp = () => {
             <span style={{ color: "#fff" }}>المحطة</span>{" "}
             <span style={{ color: "#EF4747" }}>الإخبارية</span>
           </Link>
-        </h4>{" "}
+        </h4>
       </Row>
       <Row className="mt-5">
         <Col className="d-flex justify-content-center align-items-center">
