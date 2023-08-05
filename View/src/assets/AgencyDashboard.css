@@ -59,13 +59,7 @@
 .card-img-overlay {
     background-color: rgba(255, 255, 255, 0.6);
 }
-.user-type-selection{
-    margin-bottom: 30px;
-    border: none;
-    border-radius: 20px;
-    box-shadow: #525d6ca4 0px 2px 10px;
-    padding: 1rem;
-}
+
 .user-select-link{
     text-decoration: none;
     background-color: #525d6c23;

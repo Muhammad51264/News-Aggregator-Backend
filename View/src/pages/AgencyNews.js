@@ -25,7 +25,7 @@ const AgencyNews = () => {
       });
     // Fetch all agencies from the backend API
     axios
-      .get("http://localhost:8080/agencies/allAgencies")
+      .get("http://localhost:8080/agencies")
       .then((response) => {
         setAllAgencies(response.data);
 
@@ -63,9 +63,12 @@ const AgencyNews = () => {
         <AddsBanner />
 
         <Row className="d-flex justify-content-center gap-4 my-5">
-          {agencyNews.map((obj) => (
-            <NewCard data={obj} />
-          ))}
+          {agencyNews
+            .slice()
+            .reverse()
+            .map((obj) => (
+              <NewCard data={obj} key={obj.id} />
+            ))}
         </Row>
       </Row>
 

@@ -45,9 +45,12 @@ const Home = () => {
             </Row>
             {/*landing page news*/}
             <Row className="d-flex justify-content-center gap-3 my-4">
-              {allNews.map((newsItem) => {
-                return <NewCard data={newsItem} />;
-              })}
+              {allNews
+                .slice()
+                .reverse()
+                .map((newsItem) => {
+                  return <NewCard data={newsItem} />;
+                })}
             </Row>
           </Col>
         </Row>
