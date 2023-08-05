@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/index.css";
+import "../assets/signIn.css";
 import { useCookies } from "react-cookie";
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -15,7 +16,7 @@ const SignInAgency = () => {
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
   const [publisher, setPublisher] = useCookies("name");
-  const [userFlag,setUserFlag] = useState(true);
+  const [userFlag, setUserFlag] = useState(true);
   // const [change,setChange] = useState("");
 
   const navigate = useNavigate();
@@ -35,12 +36,11 @@ const SignInAgency = () => {
   };
 
   const validatePassword = (password) => {
-  if(!password){
-    return false;
-  }else{
-    return true;
-  }
-
+    if (!password) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const validateUser = async () => {
@@ -60,7 +60,6 @@ const SignInAgency = () => {
     } else {
       setPasswordFlag(false);
     }
-
   };
 
   const submitUser = async () => {
@@ -99,7 +98,7 @@ const SignInAgency = () => {
     if (emailFlag && passwordFlag && userFlag) {
       submitUser();
     }
-  }, [emailFlag,passwordFlag,userFlag]);
+  }, [emailFlag, passwordFlag, userFlag]);
 
   return (
     <div className="sign-in-user vh-100">
@@ -149,17 +148,17 @@ const SignInAgency = () => {
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                               {passwordFlag === false && (
-                  <label style={{ color: "red" }}>
-                      يرحى ادخال كلمة المرور
-                  </label>
+                {passwordFlag === false && (
+                  <label style={{ color: "red" }}>يرحى ادخال كلمة المرور</label>
                 )}
 
-{userFlag === false && (<>
-                  <br/>
-                  <label style={{ color: "red" }}>
-                    البريد الالكتروني او كلمة المرور غير صحيحة
-                  </label></>
+                {userFlag === false && (
+                  <>
+                    <br />
+                    <label style={{ color: "red" }}>
+                      البريد الالكتروني او كلمة المرور غير صحيحة
+                    </label>
+                  </>
                 )}
               </div>
 

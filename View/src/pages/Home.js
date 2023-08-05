@@ -9,12 +9,16 @@ import NewCard from "../component/NewCard";
 // import { AllNews } from "../newsData";
 import "../assets/index.css";
 import { useNewsContext } from "../pages/Layout";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 // Add more objects
 
 const Home = () => {
   // const [allNews, setAllNews] = useState([]);
   const { allNews, setAllNews } = useNewsContext();
+  const [userType, setUserType] = useCookies("user");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all news items from the backend API
@@ -26,6 +30,11 @@ const Home = () => {
       .catch((error) => {
         console.error("Error fetching all news:", error);
       });
+  }, []);
+  useEffect(() => {
+    if (userType.user === "Agency") {
+      navigate("/admindashboard");
+    }
   }, []);
 
   return (

@@ -26,21 +26,19 @@ import { createContext, useContext, useState } from "react";
 import AgencyNews from "../pages/AgencyNews";
 import signUpUser from "../pages/SignUpUser";
 
-
 const NewsContext = createContext();
 
 export const useNewsContext = () => {
   return useContext(NewsContext);
 };
 
-const AppLayout = ()=>(
+const AppLayout = () => (
   <>
     <Header />
-  <Outlet/>
-  <Footer />
+    <Outlet />
+    <Footer />
   </>
-
-)
+);
 
 const Layout = () => {
   const [allNews, setAllNews] = useState([]);
@@ -55,24 +53,22 @@ const Layout = () => {
     <NewsContext.Provider value={{ allNews, setAllNews }}>
       <BrowserRouter>
         <Routes>
-
           <Route element={<AppLayout />}>
-          <Route path="/" Component={Home} />
-          
-          {/* <Route path="/sports" Component={Sports} /> */}
-          <Route path="/Details/:id" Component={Details} />
-          {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
-          
-          <Route path="/admindashboard" Component={AgencyDashboard} />
-          <Route path="/:type" Component={Category} />
-          <Route path="/agencies/:id" Component={AgencyNews} />
-          <Route path="/live-broadcast" Component={LiveBroadCast} />
-          <Route path="/statistics" Component={Statistics} />
-          <Route path="/setting" Component={Setting} />
-          <Route path="/account" Component={Account} />
-          <Route path="/agencies" Component={Agencies} />
+            <Route path="/" Component={Home} />
+
+            {/* <Route path="/sports" Component={Sports} /> */}
+            <Route path="/Details/:id" Component={Details} />
+            {/* {userType === "user" && <Route path="/signIn" Component={SignIn} />} */}
+
+            <Route path="/admindashboard" Component={AgencyDashboard} />
+            <Route path="/:type" Component={Category} />
+            <Route path="/agencies/:id" Component={AgencyNews} />
+            <Route path="/live-broadcast" Component={LiveBroadCast} />
+            <Route path="/statistics" Component={Statistics} />
+            <Route path="/setting" Component={Setting} />
+            <Route path="/account" Component={Account} />
+            <Route path="/agencies" Component={Agencies} />
           </Route>
- 
 
           <Route path="/signUpUser" Component={signUpUser} />
           <Route path="/SignIn" Component={SignIn} />
@@ -87,9 +83,6 @@ const Layout = () => {
             path="/UserTypeSelectionSignIn"
             Component={UserTypeSelectionSignIn}
           />
-
-
-
         </Routes>
       </BrowserRouter>
     </NewsContext.Provider>
