@@ -17,3 +17,15 @@
     padding: 2rem;
     background-color: #f5f5f6;
 }
+.userType-selection-signUp{
+    background: #27374D;
+}
+.sign-up-user{
+    background: #27374D;
+}
+.user-type-selection{
+    margin-bottom: 30px;
+    border: none;
+    box-shadow: #525d6ca4 0px 2px 10px;
+    padding: 1rem;
+}
