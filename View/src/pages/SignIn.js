@@ -6,7 +6,7 @@ import "../assets/index.css";
 import { useCookies } from "react-cookie";
 import { Container, Row, Col } from "react-bootstrap";
 
-const SignInAgency = () => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailFlag, setEmailFlag] = useState("");
@@ -254,4 +254,4 @@ const SignInAgency = () => {
   );
 };
 
-export default SignInAgency;
+export default SignIn;

@@ -8,32 +8,35 @@ const router = express.Router();
 
 
 // Route for user registration
-router.post("/register", async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
 
-    // Check if the username or email already exists
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-    if (existingUser) {
-      return res
-        .status(409)
-        .json({ message: "Username or email already in use." });
+
+router.post("/register", async function (req, res) {
+  const user = req.body;
+  try {
+    let foundUser = await User.findOne({
+      $or: [{ username: user.username }, { email: user.email }],
+    });
+    if (foundUser) {
+      return res.json({ status: "error", message: "Email already registered" });
     }
 
-    // Create a new user instance and save it to the database
-    const newUser = new User({
-      username,
-      email,
-      password,
-    });
-    await newUser.save();
+        await User.create({
+          username: user.username,
+          email: user.email,
+          password: user.password,
+        });
 
-    return res.status(201).json({ message: "User registered successfully." });
-  } catch (error) {
-    console.error("Error during user registration:", error);
-    res
-      .status(500)
-      .json({ message: "An error occurred during user registration." });
+        foundUser = await User.findOne({ email: user.email });
+        const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET);
+        console.log("User created successfully");
+        console.log(token);
+
+        // fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
+        return res.json({ status: "Success", token ,name: foundUser.username});
+
+  } catch (err) {
+    console.log(err);
+    return res.json({ error: err });
   }
 });
 

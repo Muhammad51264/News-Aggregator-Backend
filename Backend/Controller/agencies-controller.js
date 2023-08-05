@@ -40,7 +40,7 @@ router.post("/register", upload.single("img"), async function (req, res) {
     });
     if (foundAgency) {
       fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}`);
-      return res.json({ status: "error", Error: "Email already registered" });
+      return res.json({ status: "error", message: "Email already registered" });
     }
 
     fs.renameSync(

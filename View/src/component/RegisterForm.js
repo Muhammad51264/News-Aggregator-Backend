@@ -61,7 +61,7 @@ function RegisterForm() {
     } catch (err) {
       console.log(err);
       setResMessage(err.response.data.message);
-      window.alert(err.response.data.message);
+      // window.alert(err.response.data.message);
     }
   };
 
@@ -148,6 +148,7 @@ function RegisterForm() {
     }
 
     setErrors([]);
+    
   };
 
   return (
@@ -247,6 +248,12 @@ function RegisterForm() {
               ))}
             </div>
           )}
+          {    <p
+                className="d-flex flex column justify-content-center"
+                style={{ color: "red" }}
+              >
+                {resMessage ? "البريد الالكتروني او الاسم مسجل بالفعل": ""}
+              </p>}
           <Form.Group
             as={Col}
             md="6"

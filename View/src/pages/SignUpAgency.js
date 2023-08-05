@@ -15,6 +15,7 @@ const SignUpAgency = () => {
   const [errors, setErrors] = useState([]);
   const [emailFlag, setEmailFlag] = useState("");
   const [passwordFlag, setPasswordFlag] = useState("");
+  const [userFlag, setUserFlag] = useState(true);
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [cookies, setCookies] = useCookies("access_token");
@@ -48,9 +49,16 @@ const SignUpAgency = () => {
 
       const data = await res.data;
       if (data.status === "Success") {
+        setUserFlag(true);
         setCookies("access_token", data.token);
         setUserType("user", "Agency");
+        setPublisher("name", data.name);
         navigate("/admindashboard");
+      }
+
+      if (data.status === "error") {
+        console.log(data.message);
+        setUserFlag(false);
       }
       console.log(data);
     } catch (err) {
@@ -59,14 +67,10 @@ const SignUpAgency = () => {
   };
 
   useEffect(() => {
-    if (emailFlag && passwordFlag) {
-      try {
+    if (emailFlag && passwordFlag && userFlag) {
         submitAgency();
-      } catch (err) {
-        console.log(err);
-      }
     }
-  }, [emailFlag, passwordFlag]);
+  }, [emailFlag, passwordFlag,userFlag]);
 
   const handlePostContentChange = (event) => {
     setPostContent(event.target.value);
@@ -78,17 +82,6 @@ const SignUpAgency = () => {
     console.log(file);
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   // Here you can submit the post content and the selected image to your backend or handle the post creation logic.
-  //   console.log("Post Content:", postContent);
-  //   console.log("Selected Image:", selectedImage);
-
-  //   // Clear form after submission
-  //   setPostContent("");
-  //   setSelectedImage(null);
-  // };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -158,7 +151,7 @@ const SignUpAgency = () => {
 
   const saveData = async () => {
     let emailIsValid = validateEmail(email);
-
+    setUserFlag(true);
     if (emailIsValid) {
       setEmailFlag(true);
     } else {
@@ -179,42 +172,7 @@ const SignUpAgency = () => {
 
     setErrors([]);
 
-    // const pushData = async () => {
-    //   // Check if the email already exists
-    //   const existingUser = await axios.get(
-    //     `http://localhost:3000/users?email=${email}`
-    //   );
 
-    //   if (existingUser.data.length > 0) {
-    //     alert("This email already exists.");
-    //     return;
-    //   }
-
-    //   // Create the new user object
-    //   const newUser = {
-    //     firstName: firstName,
-    //     lastName: lastName,
-    //     email: email,
-    //     password: password,
-    //   };
-
-    //   try {
-    //     // Save the new user to the JSON server
-    //     await axios.post("http://localhost:3000/users", newUser);
-    //     window.location.href = "/signin";
-    //     alert("User created successfully!");
-    //   } catch (error) {
-    //     console.error("Error creating user:", error);
-    //   }
-    // };
-    // if (emailFlag && passwordFlag) {
-    //   try {
-    //     await submitAgency();
-    //     navigate("/");
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
   };
 
   return (
@@ -295,6 +253,12 @@ const SignUpAgency = () => {
                     يرجى ادخال صيغة بريد إلكتروني صحيحة مثل name@example.com
                   </label>
                 )}
+
+{userFlag === false && (
+                  <label style={{ color: "red" }}>
+                    البريد الالكتروني او الاسم مسجل بالفعل
+                  </label>
+                )}
               </div>
 
               <div className="form-outline mb-4">
@@ -341,6 +305,7 @@ const SignUpAgency = () => {
                   ))}
                 </div>
               )}
+
 
               <div className="row px-5">
                 {/* <button
