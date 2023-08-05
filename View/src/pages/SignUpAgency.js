@@ -16,15 +16,6 @@ const SignUpAgency = () => {
   const [cookies, setCookies] = useCookies(["access_token", "user", "name"]);
   const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-  };
-
-  const validatePassword = (password) => {
-    // ... your password validation logic ...
-  };
-
   const submitAgency = async () => {
     try {
       const AgencyInfo = new FormData();
