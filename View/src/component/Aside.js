@@ -130,8 +130,9 @@ const Aside = () => {
             </Col>
           </Row>
           <Row className="aside-news-agencies d-flex gap-4">
-            {allAgencies.map((newsAgency) => (
-              <img src={newsAgency.img} alt={newsAgency.publisher} />
+            <h6>الوكالات الإخبارية</h6>
+            {newsAgencies.map((newsAgency) => (
+              <img src={newsAgency.image} alt={newsAgency.name} />
             ))}
             <Link
               to="/agencies"
