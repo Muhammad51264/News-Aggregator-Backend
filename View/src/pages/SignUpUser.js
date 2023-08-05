@@ -14,7 +14,7 @@ const SignUpUser = () => {
       </h4>
       <Container fluid>
         <Row className="d-flex justify-content-center align-items-center">
-          <Col style={{ maxWidth: "60rem" }}>
+          <Col style={{ maxWidth: "50rem" }}>
             <RegisterForm />
           </Col>
         </Row>

@@ -21,9 +21,9 @@ const UserTypeSelectionSignUp = () => {
       </Row>
       <Row className="mt-5">
         <Col className="d-flex justify-content-center align-items-center">
-          <Card className="user-type-selection mt-5" style={{ width: "40rem" }}>
+          <Card className="user-type-selection mt-5" style={{ width: "30rem" }}>
             <Card.Body className="d-flex flex-column gap-2">
-              <Card.Title className="text-center">اختر نوع السحاب</Card.Title>
+              <Card.Title className="text-center">اختر نوع الحساب</Card.Title>
               <Card.Subtitle className="mb-2 text-muted text-center">
                 اقتباس{" "}
               </Card.Subtitle>
