@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import { Link,useNavigate } from "react-router-dom";
-import {useCookies} from "react-cookie"
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import "../assets/SignUp.css";
+import { Container, Row, Col } from "react-bootstrap";
 
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
@@ -19,63 +21,55 @@ const SignUpAgency = () => {
   const [userType, setUserType] = useCookies("user");
   const [publisher,setPublisher] = useCookies("name");
 
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
 
-
-  const submitAgency= async()=>{
-try{
-
-  
-  const AgencyInfo = new FormData();
-  AgencyInfo.append("publisher", firstName);
-  AgencyInfo.append("email", email);
-  AgencyInfo.append("password", password);
-  AgencyInfo.append("img", selectedImage);
-    // {
-    //   publisher: firstName,
-    //   email: email,
-    //   password: password,
-    //   img: selectedImage
-    // }
-    const res= await axios.post('http://localhost:8080/agencies/register',
-    AgencyInfo
-    , {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  )
-
-  const data = await res.data;
-  if (data.status === "Success"){
-    setCookies("access_token",data.token);
-    setUserType("user","Agency");
-    setPublisher("name", data.name);
-    navigate("/admindashboard");
-  }
-  console.log(data);
-  }
-catch(err){
-  console.log(err)
-}
-}
+  const submitAgency = async () => {
 
 
-
-useEffect(() => {
-  if (emailFlag && passwordFlag) {
     try {
-      submitAgency();
+      const AgencyInfo = new FormData();
+      AgencyInfo.append("publisher", firstName);
+      AgencyInfo.append("email", email);
+      AgencyInfo.append("password", password);
+      AgencyInfo.append("img", selectedImage);
+      // {
+      //   publisher: firstName,
+      //   email: email,
+      //   password: password,
+      //   img: selectedImage
+      // }
+      const res = await axios.post(
+        "http://localhost:8080/agencies/register",
+        AgencyInfo,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const data = await res.data;
+      if (data.status === "Success") {
+        setCookies("access_token", data.token);
+        setUserType("user", "Agency");
+        navigate("/admindashboard");
+      }
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-
-},[emailFlag,passwordFlag])
-
-
+  useEffect(() => {
+    if (emailFlag && passwordFlag) {
+      try {
+        submitAgency();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [emailFlag, passwordFlag]);
 
   const handlePostContentChange = (event) => {
     setPostContent(event.target.value);
@@ -165,7 +159,7 @@ useEffect(() => {
     return errors;
   };
 
-  const saveData = async() => {
+  const saveData = async () => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
@@ -227,44 +221,53 @@ useEffect(() => {
   };
 
   return (
-    <div className="col col-md-9 col-lg-12  mt-5 ">
-      <div className="row justify-content-center mt-5 mx-0">
-        <div className="sign-up-container p-4 col col-md-5" id="lodin-reg-card">
-          <div className="row text-center mt-md-2 mb-md-1">
-            <h4 className="" style={{ color: "#27374D" }}>
-              إنشاء حساب لوكالة إخبارية
-            </h4>
-          </div>
-          <form className="mb-5"
-          onSubmit={(e)=>{e.preventDefault();
-          saveData();
-          }}
-          
-          >
-            <div className="form-outline mb-4">
-              <label
-                className="form-label"
-                htmlFor="firstName"
-                style={{ color: "#27374D" }}
-              >
-                اسم الوكالةالإخبارية
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                className="form-control"
-                value={firstName}
-                onChange={handleFirstNameChange}
-              />
-            </div>
+    <div className="sign-up-user">
+      <h4 className="p-4">
+        <Link to="/" style={{ textDecoration: "none", paddingRight: "2rem" }}>
+          <span style={{ color: "#fff" }}>المحطة</span>{" "}
+          <span style={{ color: "#EF4747" }}>الإخبارية</span>
+        </Link>
+      </h4>
+      <Container fluid>
+        <Row className="d-flex justify-content-center align-items-center mt-3">
+          <Col style={{ maxWidth: "60rem" }}>
+            <form
+              style={{ backgroundColor: "#fff", maxWidth: "60rem" }}
+              className="mb-5 p-5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                saveData();
+              }}
+            >
+              <div className="row text-center mt-md-2 mb-md-1">
+                <h4 className="" style={{ color: "#27374D" }}>
+                  إنشاء حساب لوكالة إخبارية
+                </h4>
+              </div>
+              <div className="form-outline mb-4">
+                <label
+                  className="form-label"
+                  htmlFor="firstName"
+                  style={{ color: "#27374D" }}
+                >
+                  اسم الوكالةالإخبارية
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  className="form-control"
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                />
+              </div>
 
-            <div className="form-outline mb-4">
-            <div className="mb-3">
+              <div className="form-outline mb-4">
+                <div className="mb-3">
                   <label htmlFor="postImage" className="form-label">
                     اختر شعار الوكالة
                   </label>
                   <input
-                  required
+                    required
                     type="file"
                     className="form-control"
                     id="postImage"
@@ -273,78 +276,77 @@ useEffect(() => {
                     capture="environment"
                   />
                 </div>
-
-            </div>
-
-            <div className="form-outline mb-4">
-              <label
-                className="form-label"
-                htmlFor="email"
-                style={{ color: "#27374D" }}
-              >
-                البريد الإلكتروني
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="form-control"
-                value={email}
-                onChange={handleEmailChange}
-              />
-              {emailFlag === false && (
-                <label style={{ color: "red" }}>
-                  يرجى ادخال صيغة بريد إلكتروني صحيحة مثل name@example.com
-                </label>
-              )}
-            </div>
-
-            <div className="form-outline mb-4">
-              <label
-                className="form-label"
-                htmlFor="pass"
-                style={{ color: "#27374D" }}
-              >
-                الرقم السري
-              </label>
-              <input
-                type="password"
-                id="pass"
-                className="form-control"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </div>
-
-            <div className="form-outline mb-4">
-              <label
-                className="form-label"
-                htmlFor="conPass"
-                style={{ color: "#27374D" }}
-              >
-                تأكيد الرقم السري
-              </label>
-              <input
-                type="password"
-                id="conPass"
-                className="form-control"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-              />
-            </div>
-
-            {errors.length > 0 && (
-              <div>
-                <p style={{ color: "red" }}>يوجد أخطاء في الرقم السري:</p>
-                {errors.map((error, index) => (
-                  <p style={{ color: "red" }} key={index}>
-                    {error}
-                  </p>
-                ))}
               </div>
-            )}
 
-            <div className="row px-5">
-              {/* <button
+              <div className="form-outline mb-4">
+                <label
+                  className="form-label"
+                  htmlFor="email"
+                  style={{ color: "#27374D" }}
+                >
+                  البريد الإلكتروني
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="form-control"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+                {emailFlag === false && (
+                  <label style={{ color: "red" }}>
+                    يرجى ادخال صيغة بريد إلكتروني صحيحة مثل name@example.com
+                  </label>
+                )}
+              </div>
+
+              <div className="form-outline mb-4">
+                <label
+                  className="form-label"
+                  htmlFor="pass"
+                  style={{ color: "#27374D" }}
+                >
+                  الرقم السري
+                </label>
+                <input
+                  type="password"
+                  id="pass"
+                  className="form-control"
+                  value={password}
+                  onChange={handlePasswordChange}
+                />
+              </div>
+
+              <div className="form-outline mb-4">
+                <label
+                  className="form-label"
+                  htmlFor="conPass"
+                  style={{ color: "#27374D" }}
+                >
+                  تأكيد الرقم السري
+                </label>
+                <input
+                  type="password"
+                  id="conPass"
+                  className="form-control"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                />
+              </div>
+
+              {errors.length > 0 && (
+                <div>
+                  <p style={{ color: "red" }}>يوجد أخطاء في الرقم السري:</p>
+                  {errors.map((error, index) => (
+                    <p style={{ color: "red" }} key={index}>
+                      {error}
+                    </p>
+                  ))}
+                </div>
+              )}
+
+              <div className="row px-5">
+                {/* <button
                 type="button"
                 id="signUp-btn"
                 className="btn btn-block mb-4 login-btn"
@@ -357,19 +359,21 @@ useEffect(() => {
               >
                 أنشئ حساب
               </button> */}
-              <button
-                className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
-                // to="/AgencyDashboard"
-                type="submit"
-                style={{ backgroundColor: "rgb(39, 55, 77)" }}
-                // onClick={saveData}
-              >
-                أنشئ حساب
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+                <button
+                  className="create-account-btn w-25 p-2 text-center text-decoration-none text-light"
+                  // to="/AgencyDashboard"
+                  type="submit"
+                  style={{ backgroundColor: "rgb(39, 55, 77)" }}
+                  // onClick={saveData}
+                >
+                  أنشئ حساب
+                </button>
+              </div>
+            </form>
+            ;
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };

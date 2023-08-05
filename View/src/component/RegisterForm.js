@@ -164,24 +164,22 @@ function RegisterForm() {
           </h5>
 
           <Form.Group as={Col} md="6" controlId="validationCustom01">
-            {/* <Form.Label>الاسم الأول</Form.Label> */}
+            <Form.Label>الاسم الأول</Form.Label>
             <Form.Control
               style={{ textDirection: "right" }}
               className="userReg-email-field"
               required
               type="text"
-              placeholder="الاسم الأول"
               onChange={(e) => setFirstName(e.target.value)}
             />
             {/* <Form.Control.Feedback>يبدو جيدًا</Form.Control.Feedback> */}
           </Form.Group>
           <Form.Group as={Col} md="6" controlId="validationCustom02">
-            {/* <Form.Label>Last name</Form.Label> */}
+            <Form.Label>اسم العائلة</Form.Label>
             <Form.Control
               onChange={(e) => setLastName(e.target.value)}
               required
               type="text"
-              placeholder="اسم العائلة"
             />
             {/* <Form.Control.Feedback>يبدو جيدًا</Form.Control.Feedback> */}
           </Form.Group>
@@ -191,10 +189,9 @@ function RegisterForm() {
             md="6"
             controlId="validationCustom03"
           >
-            {/* <Form.Label>البريد الإلكتروني</Form.Label> */}
+            <Form.Label>البريد الإلكتروني</Form.Label>
             <Form.Control
               type="email"
-              placeholder="البريد الإلكتروني"
               required
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -204,10 +201,9 @@ function RegisterForm() {
           </Form.Group>
 
           <Form.Group as={Col} md="6" controlId="validationCustom04">
-            {/* <Form.Label>Password</Form.Label> */}
+            <Form.Label>كلمة المرور</Form.Label>
             <Form.Control
               type="password"
-              placeholder="كلمة المرور"
               required
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -216,10 +212,9 @@ function RegisterForm() {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="6" controlId="validationCustom05">
-            {/* <Form.Label>Confirm Password</Form.Label> */}
+            <Form.Label>تأكيد كلمة المرور</Form.Label>
             <Form.Control
               type="password"
-              placeholder="تأكيد كلمة المرور"
               required
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
