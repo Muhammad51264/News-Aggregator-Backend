@@ -17,6 +17,7 @@ const SignUpAgency = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
+  const [publisher,setPublisher] = useCookies("name");
 
   const navigate =useNavigate();
 
@@ -50,6 +51,7 @@ try{
   if (data.status === "Success"){
     setCookies("access_token",data.token);
     setUserType("user","Agency");
+    setPublisher("name", data.name);
     navigate("/admindashboard");
   }
   console.log(data);
