@@ -213,6 +213,30 @@ const Header = () => {
                       المحطة <span style={{ color: "#EF4747" }}>الإخبارية</span>
                     </Link>
                   </h4>
+
+
+
+                  {publisher.name ? <>
+                  <div>
+                  {publisher.name}
+                  </div>
+                  <button className="header-sign"
+                  
+                  onClick={()=>{
+                    setPublisher("name",null);
+                    setCookies("access_token",null);
+                    setUserType("user",null);
+                    navigate("/UserTypeSelection");
+                  }}
+                  >
+                         تسجيل الخروج
+                      
+                    </button>
+                  
+                  </>
+                    
+                    :<>
+                    
                   <button className="header-sign">
                     <Link
                       to="/UserTypeSelectionSignIn"
@@ -228,9 +252,19 @@ const Header = () => {
                       className="text-light"
                       style={{ textDecoration: "none" }}
                     >
-                      إنشاء حساب{" "}
+                      إنشاء حساب 
                     </Link>
                   </button>
+                    
+                    
+                    
+                    </>
+                
+                
+                }
+
+
+
                 </div>
                 <div className="d-flex align-items-center gap-4">
                   <Form className="header-search-form">
