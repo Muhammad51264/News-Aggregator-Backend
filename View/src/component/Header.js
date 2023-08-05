@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navbar, Container, Row, Col, Nav } from "react-bootstrap";
 import { Form, FormControl, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import AgencyDashboard from "../pages/AgencyDashboard";
@@ -11,7 +11,9 @@ import {useCookies} from "react-cookie"
 
 const Header = () => {
   const [userType, setUserType] = useCookies("user");
-
+  const [publisher,setPublisher] = useCookies("name");
+  const [cookies, setCookies] = useCookies("access_token");
+  const navigate =useNavigate();
 
 
   const currentDate = new Date().toLocaleDateString("ar-AR", {
@@ -43,6 +45,27 @@ const Header = () => {
                       المحطة <span style={{ color: "#EF4747" }}>الإخبارية</span>
                     </Link>
                   </h4>
+                  {publisher.name ? <>
+                  <div>
+                  {publisher.name}
+                  </div>
+                  <button className="header-sign"
+                  
+                  onClick={()=>{
+                    setPublisher("name",null);
+                    setCookies("access_token",null);
+                    setUserType("user",null);
+                    navigate("/UserTypeSelection");
+                  }}
+                  >
+                         تسجيل الخروج
+                      
+                    </button>
+                  
+                  </>
+                    
+                    :<>
+                    
                   <button className="header-sign">
                     <Link
                       to="/UserTypeSelectionSignIn"
@@ -58,9 +81,17 @@ const Header = () => {
                       className="text-light"
                       style={{ textDecoration: "none" }}
                     >
-                      إنشاء حساب
+                      إنشاء حساب 
                     </Link>
                   </button>
+                    
+                    
+                    
+                    </>
+                
+                
+                }
+
                 </div>
                 <div className="d-flex align-items-center gap-4">
                   <Form className="header-search-form">

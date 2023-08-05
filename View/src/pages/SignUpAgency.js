@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import "../assets/SignUp.css";
 import { Container, Row, Col } from "react-bootstrap";
 
 const SignUpAgency = () => {
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  const [emailFlag, setEmailFlag] = useState("");
-  const [passwordFlag, setPasswordFlag] = useState("");
-  const [postContent, setPostContent] = useState("");
+  const [emailFlag, setEmailFlag] = useState(false);
+  const [passwordFlag, setPasswordFlag] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [cookies, setCookies] = useCookies("access_token");
-  const [userType, setUserType] = useCookies("user");
-
+  const [cookies, setCookies] = useCookies(["access_token", "user", "name"]);
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // ... your password validation logic ...
+  };
 
   const submitAgency = async () => {
     try {
@@ -29,12 +32,7 @@ const SignUpAgency = () => {
       AgencyInfo.append("email", email);
       AgencyInfo.append("password", password);
       AgencyInfo.append("img", selectedImage);
-      // {
-      //   publisher: firstName,
-      //   email: email,
-      //   password: password,
-      //   img: selectedImage
-      // }
+
       const res = await axios.post(
         "http://localhost:8080/agencies/register",
         AgencyInfo,
@@ -48,7 +46,8 @@ const SignUpAgency = () => {
       const data = await res.data;
       if (data.status === "Success") {
         setCookies("access_token", data.token);
-        setUserType("user", "Agency");
+        setCookies("user", "Agency");
+        setCookies("name", data.name);
         navigate("/admindashboard");
       }
       console.log(data);
@@ -57,45 +56,14 @@ const SignUpAgency = () => {
     }
   };
 
-  useEffect(() => {
-    if (emailFlag && passwordFlag) {
-      try {
-        submitAgency();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }, [emailFlag, passwordFlag]);
-
-  const handlePostContentChange = (event) => {
-    setPostContent(event.target.value);
-  };
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
-    console.log(file);
   };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   // Here you can submit the post content and the selected image to your backend or handle the post creation logic.
-  //   console.log("Post Content:", postContent);
-  //   console.log("Selected Image:", selectedImage);
-
-  //   // Clear form after submission
-  //   setPostContent("");
-  //   setSelectedImage(null);
-  // };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
-
-  // const handleLastNameChange = (event) => {
-  //   setLastName(event.target.value);
-  // };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -109,53 +77,7 @@ const SignUpAgency = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const validateEmail = (email) => {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-  };
-
-  const validatePassword = (password) => {
-    const lengthPattern = /^.{8,16}$/;
-    const uppercasePattern = /[A-Z]/;
-    const lowercasePattern = /[a-z]/;
-    const specialCharacterPattern = /[!@#$%^&*]/;
-    const numberPattern = /[0-9]/;
-
-    const errors = [];
-
-    if (!lengthPattern.test(password)) {
-      errors.push("يجب أن يكون طول الرقم السري بين 8 و 16 حرفًا");
-      setPasswordFlag(false);
-    }
-
-    if (!uppercasePattern.test(password)) {
-      errors.push("يجب أن يحتوي الرقم السري على حرف واحد كبير على الأقل");
-      setPasswordFlag(false);
-    }
-
-    if (!lowercasePattern.test(password)) {
-      errors.push("يجب أن يحتوي الرقم السري على حرف واحد صغير على الأقل");
-      setPasswordFlag(false);
-    }
-
-    if (!specialCharacterPattern.test(password)) {
-      errors.push(
-        "يجب أن يحتوي الرقم السري على حرف خاص واحد على الأقل (!@#$%^&*)"
-      );
-      setPasswordFlag(false);
-    }
-
-    if (!numberPattern.test(password)) {
-      errors.push("يجب أن يحتوي الرقم السري على رقم واحد على الأقل");
-      setPasswordFlag(false);
-    }
-    if (errors.length === 0) {
-      setPasswordFlag(true);
-    }
-    return errors;
-  };
-
-  const saveData = async () => {
+  const saveData = () => {
     let emailIsValid = validateEmail(email);
 
     if (emailIsValid) {
@@ -177,43 +99,7 @@ const SignUpAgency = () => {
     }
 
     setErrors([]);
-
-    // const pushData = async () => {
-    //   // Check if the email already exists
-    //   const existingUser = await axios.get(
-    //     `http://localhost:3000/users?email=${email}`
-    //   );
-
-    //   if (existingUser.data.length > 0) {
-    //     alert("This email already exists.");
-    //     return;
-    //   }
-
-    //   // Create the new user object
-    //   const newUser = {
-    //     firstName: firstName,
-    //     lastName: lastName,
-    //     email: email,
-    //     password: password,
-    //   };
-
-    //   try {
-    //     // Save the new user to the JSON server
-    //     await axios.post("http://localhost:3000/users", newUser);
-    //     window.location.href = "/signin";
-    //     alert("User created successfully!");
-    //   } catch (error) {
-    //     console.error("Error creating user:", error);
-    //   }
-    // };
-    // if (emailFlag && passwordFlag) {
-    //   try {
-    //     await submitAgency();
-    //     navigate("/");
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
+    submitAgency();
   };
 
   return (

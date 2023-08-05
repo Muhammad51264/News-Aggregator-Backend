@@ -13,6 +13,8 @@ const SignInAgency = () => {
   const [error,setError] = useState("");
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
+  const [publisher,setPublisher] = useCookies("name");
+
   // const [change,setChange] = useState("");
 
   const navigate = useNavigate()
@@ -72,6 +74,7 @@ const SignInAgency = () => {
         console.log(result.token);
         setUserType("user","Agency");
         setCookies("access_token", result.token);
+        setPublisher("name", result.name);
         navigate("/admindashboard");
       }
 

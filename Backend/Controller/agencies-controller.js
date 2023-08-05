@@ -69,7 +69,7 @@ router.post("/register", upload.single("img"), async function (req, res) {
         console.log(token);
 
         // fs.unlinkSync(`Pictures/NewsPictures/${uploadedImage.filename}.jpg`);
-        return res.json({ status: "Success", token });
+        return res.json({ status: "Success", token ,name: foundAgency.publisher});
       })
       .catch((err) => {
         console.log("failed");
@@ -103,7 +103,7 @@ router.post("/login", async function (req, res) {
 
     const token = jwt.sign({ id: foundAgency._id }, process.env.JWT_SECRET);
 
-    return res.json({ status: "success", token, adminID: foundAgency._id });
+    return res.json({status:"success", token, adminID: foundAgency._id ,name: foundAgency.publisher});
   } catch (err) {
     console.log(err);
     return res.json({ error: err });
