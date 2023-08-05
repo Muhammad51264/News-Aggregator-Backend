@@ -1,14 +1,23 @@
 import "../assets/index.css";
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState ,useEffect} from "react";
 import axios from "axios";
 import "../assets/index.css";
+import {useCookies} from "react-cookie"
+
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailFlag, setEmailFlag] = useState("");
   const [error, setError] = useState();
+  const [cookies, setCookies] = useCookies("access_token");
+  const [userType, setUserType] = useCookies("user");
+  const [publisher,setPublisher] = useCookies("name");
+
+
+  const navigate = useNavigate()
+
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -31,34 +40,48 @@ const SignIn = () => {
     } else {
       setEmailFlag(false);
     }
-    try {
-      const response = await axios.get("http://localhost:3000/users");
-      const users = response.data;
 
-      const existingUser = users.find((user) => user.email === email);
-
-      if (!existingUser) {
-        // alert('Email does not exist');
-        setError("البريد الالكتروني غير مستخدم");
-      } else {
-        // Validate email and password here
-        if (
-          existingUser.email === email &&
-          existingUser.password === password
-        ) {
-          // Route to the index page or perform other actions
-          console.log("Validation successful");
-          setError();
-          window.location.href = "/";
-        } else {
-          // alert('Invalid email or password');
-          setError("خطأ في البريد الالكتروني أو الرقم السري");
-        }
-      }
-    } catch (error) {
-      console.log("Error:", error.message);
-    }
   };
+
+  const submitUser = async ()=>{
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/users/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
+      //data = return res.json({ token, adminID: foundAgency._id }); 
+      // الي موجودة بالباك على نفس ال 
+      // endpoint
+      
+      // const [_, setCookies] = useCookies(["access_token"]);
+  
+      const result = await response.data;
+      console.log(result);
+      if (result.status === "error") {
+        console.log(result.message);
+      }
+      if (result.status === "success") {
+        console.log(result.token);
+        setUserType("user","User");
+        setCookies("access_token", result.token);
+        setPublisher("name", result.name);
+        navigate("/");
+      }
+
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+  useEffect(() => {
+    if (emailFlag) {
+      submitUser();
+      
+    }
+  },[emailFlag])
+
 
   return (
     <section>
