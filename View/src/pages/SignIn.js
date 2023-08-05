@@ -1,10 +1,11 @@
 import "../assets/index.css";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/index.css";
-import {useCookies} from "react-cookie"
-
+import "../assets/signIn.css";
+import { useCookies } from "react-cookie";
+import { Container, Row, Col } from "react-bootstrap";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -13,11 +14,9 @@ const SignIn = () => {
   const [error, setError] = useState();
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
-  const [publisher,setPublisher] = useCookies("name");
+  const [publisher, setPublisher] = useCookies("name");
 
-
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -40,24 +39,20 @@ const SignIn = () => {
     } else {
       setEmailFlag(false);
     }
-
   };
 
-  const submitUser = async ()=>{
+  const submitUser = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/users/login",
-        {
-          email: email,
-          password: password,
-        }
-      );
-      //data = return res.json({ token, adminID: foundAgency._id }); 
-      // الي موجودة بالباك على نفس ال 
+      const response = await axios.post("http://localhost:8080/users/login", {
+        email: email,
+        password: password,
+      });
+      //data = return res.json({ token, adminID: foundAgency._id });
+      // الي موجودة بالباك على نفس ال
       // endpoint
-      
+
       // const [_, setCookies] = useCookies(["access_token"]);
-  
+
       const result = await response.data;
       console.log(result);
       if (result.status === "error") {
@@ -65,36 +60,39 @@ const SignIn = () => {
       }
       if (result.status === "success") {
         console.log(result.token);
-        setUserType("user","User");
+        setUserType("user", "User");
         setCookies("access_token", result.token);
         setPublisher("name", result.name);
         navigate("/");
       }
-
     } catch (err) {
       console.log(err.message);
     }
-  }
+  };
   useEffect(() => {
     if (emailFlag) {
       submitUser();
-      
     }
-  },[emailFlag])
-
+  }, [emailFlag]);
 
   return (
-    <section>
-      <div className="col col-md-9 col-lg-12  mt-5">
-        <div className="row justify-content-center mt-5 mx-0">
-          <div
-            className=" sign-in-container p-4 col col-md-5"
-            id="lodin-reg-card"
-          >
-            <div className="row text-center mt-md-5 mb-md-5">
-              <h4 style={{ color: "#27374D" }}>تسجيل الدخول</h4>
-            </div>
-            <form className="mb-5">
+    <div className="sign-in-user vh-100">
+      <h4 className="pt-5">
+        <Link to="/" style={{ textDecoration: "none", paddingRight: "2rem" }}>
+          <span style={{ color: "#fff" }}>المحطة</span>{" "}
+          <span style={{ color: "#EF4747" }}>الإخبارية</span>
+        </Link>
+      </h4>
+      <Container fluid>
+        <Row className="d-flex justify-content-center align-items-center pt-3 ">
+          <Col style={{ maxWidth: "60rem" }}>
+            <form
+              className="mb-5 p-4"
+              style={{ backgroundColor: "#fff", maxWidth: "60rem" }}
+            >
+              <div className="row text-center mt-md-5 mb-md-5">
+                <h4 style={{ color: "#27374D" }}>تسجيل الدخول</h4>
+              </div>
               {/* <!-- Email input --> */}
               <div className="form-outline mb-4">
                 <input
@@ -209,10 +207,10 @@ const SignIn = () => {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
-    </section>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

@@ -7,10 +7,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const UserTypeSelectionSignIn = () => {
   return (
-    <Container className="d-flex justify-content-center">
+    <Container fluid className="userType-selection-signUp vh-100">
       <Row>
-        <Col>
-          <Card className="user-type-selection mt-5" style={{ width: "25rem" }}>
+        <h4 className="mt-5">
+          <Link
+            to="/"
+            className="text-light ml-4"
+            style={{ textDecoration: "none", paddingRight: "2rem" }}
+          >
+            <span style={{ color: "#fff" }}>المحطة</span>{" "}
+            <span style={{ color: "#EF4747" }}>الإخبارية</span>
+          </Link>
+        </h4>
+      </Row>
+      <Row className="mt-5">
+        <Col className="d-flex justify-content-center align-items-center">
+          <Card className="user-type-selection mt-5" style={{ width: "30rem" }}>
             <Card.Body className="d-flex flex-column gap-2">
               <Card.Title className="text-center">اختر نوع الدخول</Card.Title>
               <Card.Subtitle className="mb-2 text-muted text-center">
@@ -35,6 +47,7 @@ const UserTypeSelectionSignIn = () => {
               </div>
             </Card.Body>
           </Card>
+          ;
         </Col>
       </Row>
     </Container>
