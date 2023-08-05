@@ -43,7 +43,15 @@ const Header = () => {
                   </h4>
                   {publisher.name ? (
                     <>
-                      <div>{publisher.name}</div>
+                      <button
+                        style={{
+                          backgroundColor: "#27374D",
+                          border: "none",
+                          color: "#fff",
+                        }}
+                      >
+                        {publisher.name}
+                      </button>
                       <button
                         className="header-sign"
                         onClick={() => {
@@ -205,7 +213,15 @@ const Header = () => {
 
                   {publisher.name ? (
                     <>
-                      <div>{publisher.name}</div>
+                      <button
+                        style={{
+                          backgroundColor: "#27374D",
+                          border: "none",
+                          color: "#fff",
+                        }}
+                      >
+                        {publisher.name}
+                      </button>
                       <button
                         className="header-sign"
                         onClick={async () => {
