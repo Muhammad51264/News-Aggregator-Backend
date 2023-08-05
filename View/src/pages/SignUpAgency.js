@@ -19,10 +19,14 @@ const SignUpAgency = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
+  const [publisher,setPublisher] = useCookies("name");
 
   const navigate = useNavigate();
 
+
   const submitAgency = async () => {
+
+
     try {
       const AgencyInfo = new FormData();
       AgencyInfo.append("publisher", firstName);
