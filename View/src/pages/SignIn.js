@@ -3,18 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/index.css";
-import "../assets/signIn.css";
 import { useCookies } from "react-cookie";
 import { Container, Row, Col } from "react-bootstrap";
 
-const SignIn = () => {
+const SignInAgency = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailFlag, setEmailFlag] = useState("");
-  const [error, setError] = useState();
+  const [passwordFlag, setPasswordFlag] = useState("");
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
   const [publisher, setPublisher] = useCookies("name");
+  const [userFlag,setUserFlag] = useState(true);
+  // const [change,setChange] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,38 +29,62 @@ const SignIn = () => {
 
   const validateEmail = (email) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     return pattern.test(email);
+  };
+
+  const validatePassword = (password) => {
+  if(!password){
+    return false;
+  }else{
+    return true;
+  }
+
   };
 
   const validateUser = async () => {
     let emailIsValid = validateEmail(email);
+    let passwordIsValid = validatePassword(password);
+    // console.log(email, password,);
+    setUserFlag(true);
 
     if (emailIsValid) {
       setEmailFlag(true);
     } else {
       setEmailFlag(false);
     }
+
+    if (passwordIsValid) {
+      setPasswordFlag(true);
+    } else {
+      setPasswordFlag(false);
+    }
+
   };
 
   const submitUser = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/users/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/users/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       //data = return res.json({ token, adminID: foundAgency._id });
       // الي موجودة بالباك على نفس ال
       // endpoint
 
       // const [_, setCookies] = useCookies(["access_token"]);
-
       const result = await response.data;
       console.log(result);
       if (result.status === "error") {
         console.log(result.message);
+        setUserFlag(false);
       }
       if (result.status === "success") {
         console.log(result.token);
+        setUserFlag(true);
         setUserType("user", "User");
         setCookies("access_token", result.token);
         setPublisher("name", result.name);
@@ -70,14 +95,14 @@ const SignIn = () => {
     }
   };
   useEffect(() => {
-    if (emailFlag) {
+    if (emailFlag && passwordFlag && userFlag) {
       submitUser();
     }
-  }, [emailFlag]);
+  }, [emailFlag,passwordFlag,userFlag]);
 
   return (
     <div className="sign-in-user vh-100">
-      <h4 className="pt-5">
+      <h4 className="pt-4">
         <Link to="/" style={{ textDecoration: "none", paddingRight: "2rem" }}>
           <span style={{ color: "#fff" }}>المحطة</span>{" "}
           <span style={{ color: "#EF4747" }}>الإخبارية</span>
@@ -91,7 +116,9 @@ const SignIn = () => {
               style={{ backgroundColor: "#fff", maxWidth: "60rem" }}
             >
               <div className="row text-center mt-md-5 mb-md-5">
-                <h4 style={{ color: "#27374D" }}>تسجيل الدخول</h4>
+                <h4 style={{ color: "#27374D" }}>
+                  {" "}
+                  تسجيل الدخول                </h4>
               </div>
               {/* <!-- Email input --> */}
               <div className="form-outline mb-4">
@@ -120,7 +147,18 @@ const SignIn = () => {
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {<label style={{ color: "red" }}>{error}</label>}
+                               {passwordFlag === false && (
+                  <label style={{ color: "red" }}>
+                      يرحى ادخال كلمة المرور
+                  </label>
+                )}
+
+{userFlag === false && (<>
+                  <br/>
+                  <label style={{ color: "red" }}>
+                    البريد الالكتروني او كلمة المرور غير صحيحة
+                  </label></>
+                )}
               </div>
 
               {/* <!-- 2 column grid layout for inline styling --> */}
@@ -152,6 +190,7 @@ const SignIn = () => {
               {/* <!-- Submit button --> */}
               <div class="row ps-5 pe-5 ">
                 <button
+                  to="/"
                   type="button"
                   id="signUp-btn"
                   className="btn btn-block mb-4 login-btn "
@@ -174,8 +213,8 @@ const SignIn = () => {
                     أنشئ حساب
                   </Link>
                   {/* <a href="signup.html" style={{ color: "#27374D" }}>
-                    انشئ حساب
-                  </a> */}
+      انشئ حساب
+    </a> */}
                 </p>
                 <p>أو سجل الدخول بواسطة:</p>
                 <button type="button" class="btn btn-link btn-floating mx-1">
@@ -207,6 +246,7 @@ const SignIn = () => {
                 </button>
               </div>
             </form>
+            ;
           </Col>
         </Row>
       </Container>
@@ -214,4 +254,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInAgency;

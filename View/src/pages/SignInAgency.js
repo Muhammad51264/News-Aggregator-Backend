@@ -10,11 +10,12 @@ const SignInAgency = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailFlag, setEmailFlag] = useState("");
+  const [passwordFlag, setPasswordFlag] = useState("");
   const [error, setError] = useState("");
   const [cookies, setCookies] = useCookies("access_token");
   const [userType, setUserType] = useCookies("user");
   const [publisher, setPublisher] = useCookies("name");
-
+  const [userFlag,setUserFlag] = useState(true);
   // const [change,setChange] = useState("");
 
   const navigate = useNavigate();
@@ -33,15 +34,33 @@ const SignInAgency = () => {
     return pattern.test(email);
   };
 
+  const validatePassword = (password) => {
+  if(!password){
+    return false;
+  }else{
+    return true;
+  }
+
+  };
+
   const validateUser = async () => {
     let emailIsValid = validateEmail(email);
+    let passwordIsValid = validatePassword(password);
     // console.log(email, password,);
+    setUserFlag(true);
 
     if (emailIsValid) {
       setEmailFlag(true);
     } else {
       setEmailFlag(false);
     }
+
+    if (passwordIsValid) {
+      setPasswordFlag(true);
+    } else {
+      setPasswordFlag(false);
+    }
+
   };
 
   const submitUser = async () => {
@@ -58,14 +77,15 @@ const SignInAgency = () => {
       // endpoint
 
       // const [_, setCookies] = useCookies(["access_token"]);
-
       const result = await response.data;
       console.log(result);
       if (result.status === "error") {
         console.log(result.message);
+        setUserFlag(false);
       }
       if (result.status === "success") {
         console.log(result.token);
+        setUserFlag(true);
         setUserType("user", "Agency");
         setCookies("access_token", result.token);
         setPublisher("name", result.name);
@@ -76,10 +96,10 @@ const SignInAgency = () => {
     }
   };
   useEffect(() => {
-    if (emailFlag) {
+    if (emailFlag && passwordFlag && userFlag) {
       submitUser();
     }
-  }, [emailFlag]);
+  }, [emailFlag,passwordFlag,userFlag]);
 
   return (
     <div className="sign-in-user vh-100">
@@ -129,7 +149,18 @@ const SignInAgency = () => {
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {<label style={{ color: "red" }}>{error}</label>}
+                               {passwordFlag === false && (
+                  <label style={{ color: "red" }}>
+                      يرحى ادخال كلمة المرور
+                  </label>
+                )}
+
+{userFlag === false && (<>
+                  <br/>
+                  <label style={{ color: "red" }}>
+                    البريد الالكتروني او كلمة المرور غير صحيحة
+                  </label></>
+                )}
               </div>
 
               {/* <!-- 2 column grid layout for inline styling --> */}

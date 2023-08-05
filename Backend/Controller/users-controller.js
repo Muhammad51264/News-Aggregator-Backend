@@ -38,31 +38,30 @@ router.post("/register", async (req, res) => {
 });
 
 // Route for user login
-router.post("/login", async (req, res) => {
+router.post("/login", async function (req, res) {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
-
-    // Check if the email exists
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials.", status:"error" });
+    const foundUser = await User.findOne({ email: email });
+    if (!foundUser) {
+      return res.json({ status: "error", message: "User didn't exist!" });
     }
-
-    // Compare the provided password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      foundUser.password
+    );
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid credentials." ,status:"error" });
+      return res.json({
+        status: "error",
+        message: "Username or Password is not correct",
+      });
     }
 
-    // Create a JWT token and send it to the client
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h", // Token expires in 1 hour
-    });
+    const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET);
 
-    return res.json({ token ,status:"success" ,name: user.username});
-  } catch (error) {
-    console.error("Error during user login:", error);
-    res.status(500).json({ message: "An error occurred during user login." });
+    return res.json({status:"success", token, userID: foundUser._id ,name: foundUser.username});
+  } catch (err) {
+    console.log(err);
+    return res.json({ error: err });
   }
 });
 
